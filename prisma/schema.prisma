@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+//=========== Auth.js Modals for prisma start ===============
+model Account {
+  userId            String?
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@index([userId])
+}
+
+//=========== Auth.js Modals for prisma end ===============
+
+model User {
+  id            String    @id @default(uuid())
+  name          String?
+  image         String
+  email         String    @unique
+  emailVerified DateTime?
+  accounts      Account[]
+  servers       Server[]
+  members       Member[]
+  channels      Channel[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Server {
+  id         String    @id @default(uuid())
+  name       String
+  image      String
+  inviteCode String    @unique
+  userId     String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  members    Member[]
+  channels   Channel[]
+
+  @@index([userId])
+}
+
+model Member {
+  id        String     @id @default(uuid())
+  role      MemberRole @default(GUEST)
+  userId    String
+  serverId  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  server    Server     @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([serverId])
+}
+
+model Channel {
+  id        String      @id @default(uuid())
+  name      String
+  type      ChannelType @default(TEXT)
+  userId    String
+  serverId  String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  server    Server      @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([serverId])
+}
+
+enum MemberRole {
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
+enum ChannelType {
+  TEXT
+  AUDIO
+  VIDEO
+}
