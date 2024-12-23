@@ -1,51 +1,59 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import "dotenv/config";
+import { getEnv } from "../utils/env";
 
 interface getSignedUrlResponse {
-  signedUrl: string | null;
-  error: string | null;
+  data: {
+    signedUrl: string | null;
+    bucketName: string;
+  } | null;
+  success: boolean;
+  error: {
+    message: string;
+  } | null;
 }
 
 class S3Service {
   private s3Client = new S3Client({
-    region:
-      process.env.AWS_REGION ??
-      (() => {
-        throw new Error("AWS_REGION is not defined");
-      })(),
+    region: getEnv("AWS_REGION"),
     credentials: {
-      accessKeyId:
-        process.env.AWS_ACCESS_KEY_ID ??
-        (() => {
-          throw new Error("AWS_ACCESS_KEY_ID is not defined");
-        })(),
-      secretAccessKey:
-        process.env.AWS_SECRET_ACCESS_KEY ??
-        (() => {
-          throw new Error("AWS_SECRET_ACCESS_KEY is not defined");
-        })(),
+      accessKeyId: getEnv("AWS_ACCESS_KEY_ID"),
+      secretAccessKey: getEnv("AWS_SECRET_ACCESS_KEY"),
     },
   });
-
+  private bucketName = getEnv("AWS_S3_BUCKET_NAME");
+  private static readonly ALLOWED_FILE_TYPES = [
+    "image/png",
+    "image/jpeg",
+    "image/gif",
+    "image/jpg",
+    "image/webp",
+  ];
+  /**
+   * Returns a signed url for uploading a new image
+   * @param key  The key of the object
+   * @param fileType  The type of the file
+   * @returns { data: {signedUrl:string, bucketName:string} | null, error: string | null }
+   * @example getUploadNewImageUrl("my-bucket", "my-key", "image/png") => { signedUrl: "https://my-bucket.s3.amazonaws.com/my-key", error: null } || { signedUrl: null, error: "File type not supported" }
+   */
   async getUploadNewImageUrl(
-    bucketName: string,
     key: string,
     fileType: string
   ): Promise<getSignedUrlResponse> {
-    const allowedFileType = [
-      "image/png",
-      "image/jpeg",
-      "image/gif",
-      "image/jpg",
-      "image/webp",
-    ];
-    if (!allowedFileType.includes(fileType)) {
-      return { signedUrl: null, error: "File type not supported" };
+    if (!S3Service.ALLOWED_FILE_TYPES.includes(fileType)) {
+      return {
+        data: null,
+        success: false,
+        error: {
+          message:
+            "File type not supported. must be one of these [png, jpeg, gif, jpg, webp] ",
+        },
+      };
     }
     try {
       const command = new PutObjectCommand({
-        Bucket: bucketName,
+        Bucket: this.bucketName,
         Key: key,
         ContentType: fileType,
       });
@@ -53,12 +61,24 @@ class S3Service {
       const signedUrl = await getSignedUrl(this.s3Client, command, {
         expiresIn: 3600,
       });
-      return { signedUrl, error: null };
+      return {
+        data: {
+          signedUrl,
+          bucketName: this.bucketName,
+        },
+        success: true,
+        error: null,
+      };
     } catch (err) {
       console.log(err);
-      return { signedUrl: null, error: "Error getting signed url" };
+      return {
+        data: null,
+        success: false,
+        error: {
+          message: `[s3Service/getUploadImageUrlError] getting signed url: ${err}`,
+        },
+      };
     }
   }
-}
 
 export const s3Service = new S3Service();
