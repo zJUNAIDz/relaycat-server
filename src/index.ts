@@ -5,12 +5,12 @@ import { cors } from "hono/cors";
 import { jwt, JwtVariables } from "hono/jwt";
 import s3Routes from "./routes/s3.route";
 import ServersRoutes from "./routes/servers.route";
+import { getEnv } from "./utils/env";
 
 type Variables = JwtVariables;
 const app = new Hono<{ Variables: Variables }>();
 
-const clientUrl = process.env.CLIENT_URL!;
-if (!clientUrl) throw new Error("CLIENT_URL is not defined");
+const clientUrl = getEnv("CLIENT_URL");
 app.use(
   "*",
   cors({
@@ -18,7 +18,7 @@ app.use(
     credentials: true,
   })
 );
-app.use(jwt({ secret: process.env.JWT_SECRET! }));
+app.use(jwt({ secret: getEnv("JWT_SECRET") }));
 app.use("/static/*", serveStatic({ root: "./" }));
 
 app.route("/s3", s3Routes);

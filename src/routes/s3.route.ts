@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { Context, Hono } from "hono";
 import { s3Service } from "../services/S3.service";
+import { getEnv } from "../utils/env";
 
 const s3Routes = new Hono();
 s3Routes.get("/uploadNewImage", async (c: Context) => {
@@ -13,17 +14,14 @@ s3Routes.get("/uploadNewImage", async (c: Context) => {
     return c.json({ error: "fileType is required" }, 400);
 
   const key = `${serverName}-${crypto.randomUUID()}.${fileType}`;
-  const bucketName = process.env.AWS_S3_BUCKET_NAME!;
+  const bucketName = getEnv("AWS_S3_BUCKET_NAME");
   if (!bucketName) {
     throw new Error("AWS_S3_BUCKET_NAME is not defined");
   }
-  
-  const { signedUrl, error } = await s3Service.getUploadNewImageUrl(
-    bucketName,
-    key,
-    fileType
-  );
+
+  const { data, error } = await s3Service.getUploadNewImageUrl(key, fileType);
   if (error) return c.json({ error }, 500);
+  const signedUrl = data?.signedUrl;
   return c.json({ signedUrl, key, bucketName });
 });
 
