@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { serversService } from "../services/servers.service";
 import { parseToken } from "../utils/token";
 import { newServerInputValidation } from "../utils/validation";
+import { db } from "../lib/db";
 const serverRoutes = new Hono();
 
 serverRoutes.post("/addNewServer", async (c) => {
@@ -37,4 +38,39 @@ serverRoutes.post("/addNewServer", async (c) => {
     return c.json({ error: "Internal Server Error" }, 500);
   }
 });
+
+serverRoutes.patch("/leave", async (c) => {
+  try {
+    const serverId = c.req.query("serverId");
+    if (!serverId) {
+      return c.json({ error: "Server ID is required" }, 400);
+    }
+    const { user } = await c.get("jwtPayload");
+    const server = await db.server.update({
+      where: {
+        id: serverId,
+        userId: {
+          not: user.id,
+        },
+        members: {
+          some: {
+            userId: user.id,
+          },
+        },
+      },
+      data: {
+        members: {
+          deleteMany: {
+            userId: user.id,
+          },
+        },
+      },
+    });
+    return c.json({ server });
+  } catch (err) {
+    console.error("[SERVER_LEAVE] ", err);
+    return c.json({ error: "Internal Server Error" }, 500);
+  }
+});
+
 export default serverRoutes;
