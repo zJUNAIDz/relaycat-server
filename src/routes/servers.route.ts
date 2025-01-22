@@ -73,4 +73,34 @@ serverRoutes.patch("/leave", async (c) => {
   }
 });
 
+serverRoutes.delete("/delete", async (c) => {
+  try {
+    const serverId = c.req.query("serverId");
+
+    if (!serverId) {
+      return c.json({ error: "Server ID is required" }, 400);
+    }
+
+    const server = await db.server.findUnique({
+      where: {
+        id: serverId,
+      },
+    });
+    if (!server) {
+      return c.json({ error: "Server not found" }, 404);
+    }
+    const { user } = c.get("jwtPayload");
+    await db.server.delete({
+      where: {
+        id: serverId,
+        userId: user.id,
+      },
+    });
+    return c.json({ message: "server deleted successfully" });
+  } catch (err) {
+    console.error("[SERVER_DELETE] ", err);
+    return c.json({ error: "Internal Server Error" }, 500);
+  }
+});
+
 export default serverRoutes;
