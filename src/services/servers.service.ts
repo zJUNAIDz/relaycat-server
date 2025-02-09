@@ -1,5 +1,6 @@
-import { MemberRole, Server } from "@prisma/client";
+import { MemberRole, Prisma, Server, User } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
+import { ServerWithMembersAndUser, ServerWithMembersOnly, ServerWithMembersUserAndChannels } from "../../types";
 import { db } from "../lib/db";
 interface CreateServerPayload {
   profile: {
@@ -45,6 +46,41 @@ class ServersService {
       throw new Error("Internal Server Error: " + err);
     }
   }
+
+  async leaveServer({
+    serverId,
+    userId,
+  }: {
+    serverId: string;
+    userId: string;
+  }): Promise<Server> {
+    try {
+      const server: Server | null = await db.server.update({
+        where: {
+          id: serverId,
+          userId: {
+            not: userId,
+          },
+          members: {
+            some: {
+              userId: userId,
+            },
+          },
+        },
+        data: {
+          members: {
+            deleteMany: {
+              userId: userId,
+            },
+          },
+        },
+      });
+      return server;
+    } catch (err) {
+      throw new Error("[ERR_SERVER_SERVICE:leaveServer]: " + err);
+    }
+  }
+
 }
 
 export const serversService = new ServersService();
