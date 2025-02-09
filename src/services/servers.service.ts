@@ -81,6 +81,24 @@ class ServersService {
     }
   }
 
+  async getServersByUserId(userId: string, options: string[]) {
+    try {
+      const servers = await db.server.findMany({
+        where: {
+          members: {
+            some: {
+              userId
+            }
+          },
+        },
+      })
+      if (!servers) return null
+      return servers
+    } catch (err) {
+      throw new Error("[ERR_SERVER_SERVICE:getServerByUserId] " + err)
+    }
+  }
+
 }
 
 export const serversService = new ServersService();

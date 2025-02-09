@@ -3,9 +3,28 @@ import { serversService } from "../services/servers.service";
 import { parseToken } from "../utils/token";
 import { newServerInputValidation } from "../utils/validation";
 import { db } from "../lib/db";
+import { randomUUIDv7 } from "bun";
+import { Server } from "@prisma/client";
 const serverRoutes = new Hono();
 
-serverRoutes.post("/addNewServer", async (c) => {
+
+
+serverRoutes.get("/", async (c) => {
+  const userId = c.req.query("userId");
+  if (!userId) {
+    return c.json({ error: "User ID is required" }, 400);
+  }
+  const options = c.req.query("options")?.split(", ") || [];
+  const servers = await serversService.getServersByUserId(userId, options);
+  if (!servers) {
+    return c.json({ error: "No servers found" }, 404)
+  }
+  return c.json(servers);
+})
+
+
+
+serverRoutes.post("/add", async (c) => {
   try {
     const body = await c.req.json();
     const validate = newServerInputValidation(body.name, body.imageUrl);
@@ -14,6 +33,7 @@ serverRoutes.post("/addNewServer", async (c) => {
     }
     const { name, imageUrl } = validate.data;
     // Get profile
+    const pf = c.get("jwtPayload").user;
     const userToken = c.req.header("Authorization")?.replace("Bearer ", "");
     if (!userToken) {
       return c.json({ error: "Unauthorized" }, 401);
@@ -38,6 +58,27 @@ serverRoutes.post("/addNewServer", async (c) => {
     return c.json({ error: "Internal Server Error" }, 500);
   }
 });
+serverRoutes.patch("/join/invite", async (c) => {
+  try {
+    console.log("recieveddd")
+    const { inviteCode } = await c.req.json<{ inviteCode: string }>();
+    if (!inviteCode) {
+      console.log("no invite code")
+      return c.json({ error: "Invite code is required" }, 400);
+    }
+    const { user: { id } } = c.get("jwtPayload")
+    const serverId = await serversService.joinServerFromInviteCode(id, inviteCode)
+    if (!serverId) {
+      return c.json({ error: "Invalid invite code" }, 400);
+    }
+    console.log("serverId", serverId)
+    return c.json({ serverId })
+  } catch (err) {
+    console.error("[SERVER_ADD_INVITE] ", err)
+    return c.json({ error: "Internal Server Error" }, 500);
+  }
+})
+
 
 serverRoutes.patch("/leave", async (c) => {
   try {
@@ -46,25 +87,9 @@ serverRoutes.patch("/leave", async (c) => {
       return c.json({ error: "Server ID is required" }, 400);
     }
     const { user } = await c.get("jwtPayload");
-    const server = await db.server.update({
-      where: {
-        id: serverId,
-        userId: {
-          not: user.id,
-        },
-        members: {
-          some: {
-            userId: user.id,
-          },
-        },
-      },
-      data: {
-        members: {
-          deleteMany: {
-            userId: user.id,
-          },
-        },
-      },
+    const server = await serversService.leaveServer({
+      serverId,
+      userId: user.id,
     });
     return c.json({ server });
   } catch (err) {
@@ -102,5 +127,43 @@ serverRoutes.delete("/delete", async (c) => {
     return c.json({ error: "Internal Server Error" }, 500);
   }
 });
+
+serverRoutes.patch("/:id/invite-code", async (c) => {
+  const serverId = c.req.param("id");
+  const userId = c.get("jwtPayload").user.id;
+  if (!serverId) {
+    return c.json({ error: "Server ID is required" }, 400);
+  }
+  if (!userId) {
+    return c.json({ error: "Unauthorized" }, 400)
+  }
+  const inviteCode = randomUUIDv7("hex");
+  const server: Server | null = await serversService.updateServerInviteCode({ serverId, userId, inviteCode });
+  if (!server) {
+    return c.json({ error: "Server not found" }, 404);
+  }
+  return c.json({ server });
+
+})
+
+serverRoutes.put("/:id/join", async (c) => {
+  const serverId = c.req.param("id");
+  const userId = c.get("jwtPayload").user.id;
+  if (!serverId) {
+    return c.json({ error: "Server ID is required" }, 400);
+  }
+  if (!userId) {
+    return c.json({ error: "Unauthorized" }, 400)
+  }
+  const inviteCode = c.req.query("inviteCode");
+  if (!inviteCode) {
+    return c.json({ error: "Invite code is required" }, 400);
+  }
+  const id: Server["id"] | null = await serversService.joinServerFromInviteCode(userId, inviteCode);
+  if (!id) {
+    return c.json({ error: "Server not found" }, 404);
+  }
+  return c.json({ serverId });
+})
 
 export default serverRoutes;
