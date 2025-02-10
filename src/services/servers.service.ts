@@ -143,6 +143,24 @@ class ServersService {
     }
   }
 
+  async updateServerInviteCode({ serverId, userId, inviteCode }: { serverId: string, userId: string, inviteCode: string }) {
+    try {
+      const server: Server = await db.server.update({
+        where: {
+          id: serverId,
+          userId,
+        },
+        data: {
+          inviteCode,
+        },
+      });
+      if (!server) return null
+      return server
+    } catch (err) {
+      throw new Error("[ERR_SERVER_SERVICE:updateServerInviteCode] " + err)
+    }
+  }
+
 }
 
 export const serversService = new ServersService();
