@@ -81,6 +81,50 @@ class ServersService {
     }
   }
 
+  async getServer(serverId: Server["id"], userId: User["id"], options: ["members"]): Promise<{ server: ServerWithMembersOnly | null, error: string | null }>;
+  async getServer(serverId: Server["id"], userId: User["id"], options: ["user", "members"] | ["user"]): Promise<{ server: ServerWithMembersAndUser | null, error: string | null }>;
+  async getServer(serverId: Server["id"], userId: User["id"], options: ["user", "members", "channels"] | ["user", "channels"]): Promise<{ server: ServerWithMembersUserAndChannels | null, error: string | null }>
+  async getServer(serverId: Server["id"], userId: User["id"], options: string[]): Promise<{ server: Server | null, error: string | null }>;
+
+  async getServer(serverId: Server["id"], userId: User["id"], options: string[]): Promise<{
+    server: ServerWithMembersAndUser | ServerWithMembersOnly | Server | null,
+    error: string | null
+  }> {
+    try {
+      const server: ServerWithMembersAndUser | Server | null = await db.server.findUnique({
+        where: {
+          id: serverId,
+          members: {
+            some: {
+              userId
+            }
+          }
+        },
+        include: {
+          members: (options.includes("members") || options.includes("user")) ? {
+            include: {
+              user: options.includes("user") ? true : false,
+            },
+            orderBy: {
+              role: "asc",
+            }
+          } : false,
+          channels: (options.includes("channels")) ? true : false
+        }
+      })
+      if (!server) {
+        console.log(`server with id: ${serverId} not found.`)
+        return { server: null, error: `server with id: ${serverId} not found` }
+      }
+      return { server, error: null }
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        return { server: null, error: err.message }
+      }
+      throw new Error("[ERR_SERVER_SERVICE:getServerById] " + err)
+    }
+  }
+
   async getServersByUserId(userId: string, options: string[]) {
     try {
       const servers = await db.server.findMany({
