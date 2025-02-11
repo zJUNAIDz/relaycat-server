@@ -161,6 +161,33 @@ class ServersService {
     }
   }
 
+  async joinServerFromInviteCode(userId: string, inviteCode: string) {
+    try {
+      const { id } = await db.server.update({
+        where: {
+          inviteCode,
+          members: {
+            none: {
+              userId
+            }
+          }
+        },
+        data: {
+          members: {
+            create: {
+              userId
+            }
+          }
+        },
+        select: {
+          id: true
+        }
+      })
+      return id
+    } catch (err) {
+      return null
+    }
+  }
 }
 
 export const serversService = new ServersService();
