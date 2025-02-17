@@ -1,6 +1,6 @@
-import { MemberRole } from "@prisma/client";
-import { db } from "../lib/db";
+import { MemberRole, Server } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
+import { db } from "../lib/db";
 interface CreateServerPayload {
   profile: {
     id: string;
@@ -23,7 +23,7 @@ class ServersService {
         throw new Error("Name and image URL are required");
       }
       // Create server
-      const server = await db.server.create({
+      const server: Server | null = await db.server.create({
         data: {
           name: serverName,
           userId: profile.id,
@@ -37,6 +37,9 @@ class ServersService {
           },
         },
       });
+      if (!server) {
+        throw new Error("Failed to create server");
+      }
       return server;
     } catch (err) {
       throw new Error("Internal Server Error: " + err);

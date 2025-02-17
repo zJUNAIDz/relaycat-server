@@ -23,7 +23,6 @@ channelsRoute.post("/create", async (c) => {
     return c.json({ error: "serverId is required" }, 400);
   }
   const { user } = c.get("jwtPayload");
-  console.log(user.id);
   const server = await db.server.update({
     where: {
       id: serverId,

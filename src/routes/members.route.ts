@@ -17,10 +17,11 @@ membersRoutes.patch("/changeRole", async (c) => {
       return c.json({ error: "Role is required" }, 400);
     }
     console.table({ serverId, memberId, role });
+    const { user: { id: userId } } = c.get("jwtPayload")
     const server = await db.server.update({
       where: {
         id: serverId,
-        userId: c.get("jwtPayload").id,
+        userId: userId,
       },
       data: {
         members: {
@@ -28,7 +29,7 @@ membersRoutes.patch("/changeRole", async (c) => {
             where: {
               id: memberId,
               userId: {
-                not: c.get("jwtPayload").id,
+                not: userId,
               },
             },
             data: {

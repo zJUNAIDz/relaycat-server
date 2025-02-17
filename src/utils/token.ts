@@ -6,6 +6,5 @@ export const parseToken = async (
   secretKey = getEnv("JWT_SECRET")
 ) => {
   const decodedPayload = await verify(token, secretKey);
-  console.log(decodedPayload);
   return decodedPayload;
 };
