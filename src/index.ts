@@ -26,6 +26,7 @@ app.use(jwt({ secret: getEnv("JWT_SECRET") }));
 app.use("/static/*", serveStatic({ root: "./" }));
 
 app.route("/s3", s3Routes);
+app.route("profiles", profilesRoute)
 app.route("/servers", serversRoutes);
 app.route("/members", membersRoutes);
 app.route("/channels", channelsRoute);
