@@ -3,15 +3,17 @@ import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import { cors } from "hono/cors";
 import { jwt, JwtVariables } from "hono/jwt";
+import channelsRoute from "./routes/channels.route";
+import membersRoutes from "./routes/members.route";
+import profilesRoute from "./routes/profiles.route";
 import s3Routes from "./routes/s3.route";
 import serversRoutes from "./routes/servers.route";
 import { getEnv } from "./utils/env";
-import membersRoutes from "./routes/members.route";
-import channelsRoute from "./routes/channels.route";
+import { errorhandler } from "./utils/error-handler";
 
 type Variables = JwtVariables;
 const app = new Hono<{ Variables: Variables }>();
-
+app.onError(errorhandler);
 const clientUrl = getEnv("CLIENT_URL");
 app.use(
   "*",
