@@ -13,7 +13,11 @@ s3Routes.get("/uploadNewImage", async (c: Context) => {
   if (!fileType || fileType.trim() === "")
     return c.json({ error: "fileType is required" }, 400);
 
-  const key = `${serverName}-${crypto.randomUUID()}.${fileType}`;
+  const fileExtension = fileType.split("/")[1];
+  if (!["png", "jpg", "jpeg", "webp"].includes(fileExtension)) {
+    return c.json({ error: "fileType is not supported" }, 400);
+  }
+  const key = `${serverName}-${crypto.randomUUID()}.${fileExtension}`;
   const bucketName = getEnv("AWS_S3_BUCKET_NAME");
   if (!bucketName) {
     throw new Error("AWS_S3_BUCKET_NAME is not defined");
