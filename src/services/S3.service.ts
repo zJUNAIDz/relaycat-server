@@ -70,7 +70,7 @@ class S3Service {
         error: null,
       };
     } catch (err) {
-      console.log(err);
+      console.error("[getUploadUrl] ", err);
       return {
         data: null,
         success: false,

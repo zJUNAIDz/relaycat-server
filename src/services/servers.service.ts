@@ -113,7 +113,6 @@ class ServersService {
         }
       })
       if (!server) {
-        console.log(`server with id: ${serverId} not found.`)
         return { server: null, error: `server with id: ${serverId} not found` }
       }
       return { server, error: null }

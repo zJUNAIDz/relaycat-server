@@ -5,8 +5,7 @@ const membersRoutes = new Hono();
 
 membersRoutes.patch("/changeRole", async (c) => {
   try {
-    const { serverId, memberId } = c.req.query();
-    const { role } = await c.req.json();
+    const { role, serverId, memberId } = await c.req.json();
     if (!serverId) {
       return c.json({ error: "Server ID is required" }, 400);
     }
@@ -16,7 +15,6 @@ membersRoutes.patch("/changeRole", async (c) => {
     if (!role) {
       return c.json({ error: "Role is required" }, 400);
     }
-    console.table({ serverId, memberId, role });
     const { user: { id: userId } } = c.get("jwtPayload")
     const server = await db.server.update({
       where: {

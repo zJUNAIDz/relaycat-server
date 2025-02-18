@@ -24,7 +24,6 @@ serverRoutes.get("/", async (c) => {
 
 
 serverRoutes.get("/:serverId", async (c) => {
-  console.log("serverId", c.req.param("serverId"))
   const serverId = c.req.param("serverId") as Server["id"];
   if (!serverId) {
     return c.json({ error: "server id is required" })
@@ -33,7 +32,6 @@ serverRoutes.get("/:serverId", async (c) => {
   const options = c.req.query("options")?.split(",") || [];
   console.table({ serverId, userId, options })
   const { server } = await serversService.getServer(serverId, userId, options);
-  console.log("server", server)
   return c.json(server);
 })
 
@@ -73,10 +71,8 @@ serverRoutes.post("/add", async (c) => {
 });
 serverRoutes.patch("/join/invite", async (c) => {
   try {
-    console.log("recieveddd")
     const { inviteCode } = await c.req.json<{ inviteCode: string }>();
     if (!inviteCode) {
-      console.log("no invite code")
       return c.json({ error: "Invite code is required" }, 400);
     }
     const { user: { id } } = c.get("jwtPayload")
@@ -84,7 +80,6 @@ serverRoutes.patch("/join/invite", async (c) => {
     if (!serverId) {
       return c.json({ error: "Invalid invite code" }, 400);
     }
-    console.log("serverId", serverId)
     return c.json({ serverId })
   } catch (err) {
     console.error("[SERVER_ADD_INVITE] ", err)
