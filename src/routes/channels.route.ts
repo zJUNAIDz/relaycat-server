@@ -1,6 +1,7 @@
 import { ChannelType, MemberRole } from "@prisma/client";
 import { Hono } from "hono";
 import { db } from "../lib/db";
+import { channelService } from "../services/channels.service";
 
 const channelsRoute = new Hono();
 
@@ -8,8 +9,7 @@ channelsRoute.get("/", (c) => {
   return c.text("get all channels");
 });
 channelsRoute.post("/create", async (c) => {
-  const { name, type } = await c.req.json();
-  const serverId = c.req.query("serverId");
+  const { name, type, serverId } = await c.req.json();
   if (!name) {
     return c.json({ error: "name is required" }, 400);
   }
@@ -22,31 +22,18 @@ channelsRoute.post("/create", async (c) => {
   if (!serverId) {
     return c.json({ error: "serverId is required" }, 400);
   }
-  const { user } = c.get("jwtPayload");
-  const server = await db.server.update({
-    where: {
-      id: serverId,
-      members: {
-        some: {
-          userId: user.id,
-          role: {
-            in: [MemberRole.ADMIN, MemberRole.MODERATOR],
-          },
-        },
-      },
-    },
-    data: {
-      channels: {
-        create: {
-          userId: user.id,
-          name,
-          type,
-        },
-      },
-    },
-  });
+  const { user: { id: userId } } = c.get("jwtPayload");
 
+  const channel = {
+    name,
+    type,
+    serverId,
+    userId,
+  }
+
+  const { server } = await channelService.createChannel(channel)
   return c.json({ server });
 });
+
 
 export default channelsRoute;
