@@ -69,6 +69,48 @@ class ChannelService {
     // });
   }
 
+  async editChannel({ name, type, channelId, userId }:
+    { name: Channel["name"], type: Channel["type"], channelId: Channel["id"], userId: Channel["userId"] }):
+    Promise<{ server: any | null, error: string | null }> {
+    try {
+
+      const server = await db.channel.update({
+        where: {
+          id: channelId,
+          server: {
+            members: {
+              some: {
+                userId: userId,
+                role: {
+                  in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+                },
+              },
+            },
+          }
+        },
+        data: {
+          name,
+          type,
+        }
+      });
+      if (!server) {
+        return { server: null, error: "Server not found" };
+      }
+
+      console.log("server from create channel: ", server)
+      return { server, error: null };
+    } catch (err) {
+      return { server: null, error: "Something went wrong" };
+    }
+    // const cnl = await db.channel.create({
+    //   data: {
+    //     name,
+    //     type,
+    //     serverId,
+    //     userId,
+    //   },
+    // });
+  }
 }
 
 export const channelService = ChannelService.getInstance();
