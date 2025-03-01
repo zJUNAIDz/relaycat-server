@@ -10,10 +10,7 @@ const serverRoutes = new Hono();
 
 
 serverRoutes.get("/", async (c) => {
-  const userId = c.req.query("userId");
-  if (!userId) {
-    return c.json({ error: "User ID is required" }, 400);
-  }
+  const { user: { id: userId } } = c.get("jwtPayload")
   const options = c.req.query("options")?.split(", ") || [];
   const servers = await serversService.getServersByUserId(userId, options);
   if (!servers) {
@@ -30,12 +27,12 @@ serverRoutes.get("/:serverId", async (c) => {
   }
   const { user: { id: userId } } = c.get("jwtPayload")
   const options = c.req.query("options")?.split(",") || [];
-  console.table({ serverId, userId, options })
   const { server } = await serversService.getServer(serverId, userId, options);
   return c.json(server);
 })
 
-serverRoutes.post("/add", async (c) => {
+
+serverRoutes.post("/", async (c) => {
   try {
     const body = await c.req.json();
     const validate = newServerInputValidation(body.name, body.imageUrl);
@@ -44,22 +41,10 @@ serverRoutes.post("/add", async (c) => {
     }
     const { name, imageUrl } = validate.data;
     // Get profile
-    const pf = c.get("jwtPayload").user;
-    const userToken = c.req.header("Authorization")?.replace("Bearer ", "");
-    if (!userToken) {
-      return c.json({ error: "Unauthorized" }, 401);
-    }
-    const profile = (await parseToken(userToken)) as {
-      user: {
-        id: string;
-        name: string;
-        email: string;
-        imageUrl: string;
-      };
-    };
+    const { user } = c.get("jwtPayload");
     // Create server
     const server = await serversService.createServer({
-      profile: profile.user,
+      profile: user,
       serverName: name,
       serverImageUrl: imageUrl,
     });
@@ -69,6 +54,7 @@ serverRoutes.post("/add", async (c) => {
     return c.json({ error: "Internal Server Error" }, 500);
   }
 });
+
 serverRoutes.patch("/join/invite", async (c) => {
   try {
     const { inviteCode } = await c.req.json<{ inviteCode: string }>();
@@ -138,7 +124,7 @@ serverRoutes.delete("/delete", async (c) => {
 
 serverRoutes.patch("/:id/invite-code", async (c) => {
   const serverId = c.req.param("id");
-  const userId = c.get("jwtPayload").user.id;
+  const { user: { id: userId } } = c.get("jwtPayload");
   if (!serverId) {
     return c.json({ error: "Server ID is required" }, 400);
   }
@@ -156,7 +142,7 @@ serverRoutes.patch("/:id/invite-code", async (c) => {
 
 serverRoutes.put("/:id/join", async (c) => {
   const serverId = c.req.param("id");
-  const userId = c.get("jwtPayload").user.id;
+  const { user: { id: userId } } = c.get("jwtPayload");
   if (!serverId) {
     return c.json({ error: "Server ID is required" }, 400);
   }

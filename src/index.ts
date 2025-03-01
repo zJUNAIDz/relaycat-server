@@ -13,7 +13,6 @@ import { errorhandler } from "./utils/error-handler";
 
 type Variables = JwtVariables;
 const app = new Hono<{ Variables: Variables }>();
-app.onError(errorhandler);
 const clientUrl = getEnv("CLIENT_URL");
 app.use(
   "*",
@@ -23,6 +22,17 @@ app.use(
   })
 );
 app.use(jwt({ secret: getEnv("JWT_SECRET") }));
+
+// app.use("/auth/*", async (c, next) => {
+//   // Skip JWT verification for auth routes
+//   await next();
+// });
+
+// app.use("*", async (c, next) => {
+//   // Apply JWT to all other routes
+//   const jwtMiddleware = jwt({ secret: getEnv("JWT_SECRET") });
+//   return jwtMiddleware(c, next);
+// });
 app.use("/static/*", serveStatic({ root: "./" }));
 
 app.route("/s3", s3Routes);
@@ -34,6 +44,7 @@ app.get("/", (c) => {
   return c.html(`<h1> This is an Internal API.</h1>`);
 });
 
+app.onError(errorhandler);
 export default {
   port: 3001,
   fetch: app.fetch,
