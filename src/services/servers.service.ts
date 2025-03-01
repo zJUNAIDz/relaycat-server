@@ -187,6 +187,28 @@ class ServersService {
       return null
     }
   }
+
+
+  async editServer(serverId: Server["id"], name: string, imageUrl: string): Promise<{ server: Server | null, error: string | null }> {
+    try {
+      const server = await db.server.update({
+        where: {
+          id: serverId,
+        },
+        data: {
+          name,
+          image: imageUrl,
+        },
+      })
+      if (!server) {
+        return { server: null, error: "server not found" }
+      }
+      return { server, error: null }
+    } catch (err) {
+      console.error("[ERR_SERVER_SERVICE:editServer] ", err)
+      return { server: null, error: "server error" }
+    }
+  }
 }
 
 export const serversService = new ServersService();

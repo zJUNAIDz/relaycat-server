@@ -31,6 +31,17 @@ serverRoutes.get("/:serverId", async (c) => {
   return c.json(server);
 })
 
+serverRoutes.patch("/:serverId", async (c) => {
+  const serverId = c.req.param("serverId") as Server["id"];
+  const { name, imageUrl } = await c.req.json<{ name: string, imageUrl: string }>();
+
+  const { server, error } = await serversService.editServer(serverId, name, imageUrl);
+  if (error) {
+    return c.json({ error }, 400)
+  }
+  return c.json(server);
+})
+
 
 serverRoutes.post("/", async (c) => {
   try {
