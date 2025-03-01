@@ -68,6 +68,29 @@ class ChannelService {
     // });
   }
 
+  async getChannelById(channelId: Channel["id"], userId: User["id"]) {
+    try {
+      const channel = await db.channel.findUnique({
+        where: {
+          id: channelId,
+          server: {
+            members: {
+              some: {
+                userId
+              }
+            }
+          }
+        },
+      })
+      if (!channel) {
+        return { channel: null, error: "Channel not found" }
+      }
+      return { channel, error: null }
+    } catch (err) {
+      console.error("[getChannelById]", err)
+      return { channel: null, error: "Internal Server Error" }
+    }
+  }
 
 
   async getChannelsByServerId(serverId: Server["id"], userId: User["id"]): Promise<{ channels: Channel[], error: null } | { channels: null, error: string }> {

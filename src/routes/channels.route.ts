@@ -46,6 +46,17 @@ channelsRoute.post("/create", async (c) => {
   return c.json({ server });
 });
 
+channelsRoute.get("/:channelId", async (c) => {
+  const channelId = c.req.param("channelId")
+  if (!channelId) {
+    return c.json({ error: "channelId is required" }, 400)
+  }
+  const { user: { id: userId } } = c.get("jwtPayload")
+  const channel = await channelService.getChannelById(channelId, userId)
+  if (!channel) return c.json({ error: "Channel not found" }, 400)
+  return c.json({ channel })
+})
+
 channelsRoute.patch("/:channelId", async (c) => {
   const { name, type } = await c.req.json();
   if (!name || !type) {
@@ -56,6 +67,7 @@ channelsRoute.patch("/:channelId", async (c) => {
     return c.json({ error: "id is required" }, 400);
   }
   const { user: { id: userId } } = c.get("jwtPayload");
+  // console.table({ name, type, channelId, userId });
   const { server } = await channelService.editChannel({ name, type, channelId, userId });
   if (!server) {
     return c.json({ error: "server not found" }, 404);
