@@ -163,6 +163,32 @@ class ChannelService {
     //   },
     // });
   }
+  async deleteChannel(channelId: Channel["id"], userId: User["id"]) {
+    try {
+      const server = await db.channel.delete({
+        where: {
+          id: channelId,
+          server: {
+            members: {
+              some: {
+                userId: userId,
+                role: {
+                  in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+                },
+              },
+            },
+          }
+        },
+      });
+      if (!server) {
+        return { server: null, error: "Server not found" };
+      }
+      return { server, error: null };
+    } catch (err) {
+      console.error("[channelDelete] ", err)
+      return { server: null, error: "Something went wrong" };
+    }
+  }
 }
 
 export const channelService = ChannelService.getInstance();

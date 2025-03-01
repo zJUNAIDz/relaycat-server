@@ -74,4 +74,16 @@ channelsRoute.patch("/:channelId", async (c) => {
   }
   return c.json({ server });
 });
+channelsRoute.delete("/:channelId", async (c) => {
+  const { channelId } = c.req.param();
+  if (!channelId) {
+    return c.json({ error: "id is required" }, 400);
+  }
+  const { user: { id: userId } } = c.get("jwtPayload");
+  const { server } = await channelService.deleteChannel(channelId, userId);
+  if (!server) {
+    return c.json({ error: "server not found" }, 404);
+  }
+  return c.json({ server });
+});
 export default channelsRoute;
