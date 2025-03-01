@@ -1,4 +1,4 @@
-import { Channel, MemberRole, Server } from "@prisma/client";
+import { Channel, MemberRole, Server, User } from "@prisma/client";
 import { db } from "../lib/db";
 import { ServerWithChannels } from "../../types";
 
@@ -54,7 +54,6 @@ class ChannelService {
         return { server: null, error: "Server not found" };
       }
 
-      console.log("server from create channel: ", server)
       return { server, error: null };
     } catch (err) {
       return { server: null, error: "Something went wrong" };
@@ -67,6 +66,37 @@ class ChannelService {
     //     userId,
     //   },
     // });
+  }
+
+
+
+  async getChannelsByServerId(serverId: Server["id"], userId: User["id"]): Promise<{ channels: Channel[], error: null } | { channels: null, error: string }> {
+    try {
+      const channels: Channel[] = await db.channel.findMany({
+        where: {
+          server: {
+            id: serverId,
+            members: {
+              some: {
+                user: {
+                  id: userId
+                }
+              }
+            }
+          },
+        },
+        orderBy: {
+          createdAt: "asc"
+        },
+      })
+      if (!channels) {
+        return { channels: null, error: "no Channel found" }
+      }
+      return { channels, error: null }
+    } catch (err) {
+      console.error("[getChannelsByServerId] ", err)
+      return { channels: null, error: "Failed to get channels by server id" }
+    }
   }
 
   async editChannel({ name, type, channelId, userId }:
@@ -97,7 +127,6 @@ class ChannelService {
         return { server: null, error: "Server not found" };
       }
 
-      console.log("server from create channel: ", server)
       return { server, error: null };
     } catch (err) {
       return { server: null, error: "Something went wrong" };

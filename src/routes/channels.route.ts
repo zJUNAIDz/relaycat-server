@@ -5,8 +5,19 @@ import { channelService } from "../services/channels.service";
 
 const channelsRoute = new Hono();
 
-channelsRoute.get("/", (c) => {
-  return c.text("get all channels");
+channelsRoute.get("/", async (c) => {
+  try {
+    const { serverId } = c.req.query();
+    const { user: { id: userId } } = c.get("jwtPayload")
+    const { channels, error } = await channelService.getChannelsByServerId(serverId, userId)
+    if (error) {
+      return c.json({ error }, 400)
+    }
+    return c.json({ channels });
+  } catch (err) {
+    return c.json({ error: "Internal Server Error" }, 500)
+  }
+
 });
 channelsRoute.post("/create", async (c) => {
   const { name, type, serverId } = await c.req.json();
@@ -45,13 +56,10 @@ channelsRoute.patch("/:channelId", async (c) => {
     return c.json({ error: "id is required" }, 400);
   }
   const { user: { id: userId } } = c.get("jwtPayload");
-  console.table({ name, type, channelId, userId });
   const { server } = await channelService.editChannel({ name, type, channelId, userId });
   if (!server) {
     return c.json({ error: "server not found" }, 404);
   }
-  console.log(server)
   return c.json({ server });
 });
-
 export default channelsRoute;
