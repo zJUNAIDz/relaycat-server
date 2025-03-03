@@ -1,7 +1,23 @@
 import { Hono } from "hono";
 import { db } from "../lib/db";
+import { membersService } from "../services/members.service";
 
 const membersRoutes = new Hono();
+
+
+membersRoutes.get("/:memberId", async (c) => {
+  try {
+    const memberId = c.req.param("memberId");
+    const { member, error } = await membersService.getMemberById(memberId)
+    if (error) {
+      return c.json({ error }, 404);
+    }
+    return c.json({ member });
+  } catch (err) {
+    console.error("[MEMBERS_ID_GET] ", err);
+    return c.json({ error: "Internal Server Error" }, 500);
+  }
+})
 
 membersRoutes.patch("/changeRole", async (c) => {
   try {
