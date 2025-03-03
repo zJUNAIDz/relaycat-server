@@ -19,5 +19,22 @@ class MembersService {
       return { error: "Failed to find member" };
     }
   }
+
+  async getMemberByUserId(userId: Member["userId"]) {
+    try {
+      const member = await db.member.findFirst({
+        where: {
+          userId
+        },
+      });
+      return { member };
+    } catch (err) {
+      console.error("[getMembersByProfileId] ", err)
+      return { error: "Failed to find members" };
+    }
+  }
+  
+  
+
 }
 export const membersService = new MembersService();
