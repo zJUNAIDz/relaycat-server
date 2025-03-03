@@ -34,7 +34,25 @@ class MembersService {
     }
   }
   
-  
+  async getMembersByServerId(serverId: Member["serverId"]) {
+    try {
+      const members = await db.member.findMany({
+        where: {
+          serverId,
+        },
+        include: {
+          user: true,
+        },
+        orderBy: {
+          role: "asc",
+        },
+      });
+      return { members };
+    } catch (err) {
+      console.error("[getMembersByServerId] ", err)
+      return { error: "Failed to find members" };
+    }
+  }
 
 }
 export const membersService = new MembersService();

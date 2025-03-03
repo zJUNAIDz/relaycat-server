@@ -31,6 +31,17 @@ membersRoutes.get("/user/:userId", async (c) => {
   }
 })
 
+membersRoutes.get("/server/:serverId", async (c) => {
+  try {
+    const serverId = c.req.param("serverId");
+    const { members, error } = await membersService.getMembersByServerId(serverId)
+    return c.json({ members });
+  } catch (err) {
+    console.error("[MEMBERS_ID_GET] ", err);
+    return c.json({ error: "Internal Server Error" }, 500);
+  }
+});
+
 membersRoutes.patch("/changeRole", async (c) => {
   try {
     const { role, serverId, memberId } = await c.req.json();
