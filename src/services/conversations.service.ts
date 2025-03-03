@@ -67,5 +67,18 @@ class ConversationService {
       return { conversation: null, error: "Failed to create conversation" }
     }
   }
+  async getOrCreateConversation(memberOneId: Member["id"], memberTwoId: Member["id"]) {
+    try {
+      let conversation = await this.findConversation(memberOneId, memberTwoId);
+      if (conversation.error) {
+        conversation = await this.createConversation(memberOneId, memberTwoId);
+      }
+      return { conversation, error: null }
+    }
+    catch (err) {
+      console.error("[getOrCreateConversation] ", err)
+      return { conversation: null, error: "Failed to get or create conversation" }
+    }
+  }
 }
 export const conversationService = new ConversationService();
