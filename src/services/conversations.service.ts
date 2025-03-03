@@ -40,5 +40,32 @@ class ConversationService {
       return { conversation: null, error: "Failed to find conversation" }
     }
   }
+  async createConversation(memberOneId: Member["id"], memberTwoId: Member["id"]) {
+    try {
+      const conversation = await db.conversation.create({
+        data: {
+          memberOneId,
+          memberTwoId
+        },
+        include: {
+          memberOne: {
+            include: {
+              user: true
+            }
+          },
+          memberTwo: {
+            include: {
+              user: true
+            }
+          }
+        }
+      })
+      return { conversation, error: null }
+    }
+    catch (err) {
+      console.error("[createConversation] ", err)
+      return { conversation: null, error: "Failed to create conversation" }
+    }
+  }
 }
 export const conversationService = new ConversationService();

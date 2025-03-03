@@ -16,4 +16,16 @@ conversationsRoute.get("/", async (c) => {
   return c.json({ conversation }, 200)
 });
 
+conversationsRoute.post("/", async (c) => {
+  const { memberOneId, memberTwoId } = await c.req.json();
+  if (!memberOneId || !memberTwoId) {
+    return c.json({ error: "memberOneId and memberTwoId are required" }, 400)
+  }
+  const { conversation, error } = await conversationService.createConversation(memberOneId, memberTwoId);
+  if (error) {
+    return c.json({ error }, 400)
+  }
+  return c.json({ conversation }, 200)
+});
+
 export default conversationsRoute;
