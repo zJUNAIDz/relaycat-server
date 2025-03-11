@@ -59,5 +59,13 @@ messageRoute.patch("/:messageId", async (c) => {
   const { message } = await messageService.updateMessage(messageId, channelId, content);
   return c.json(message);
 })
-
+messageRoute.delete("/:messageId", async (c) => {
+  const { messageId } = c.req.param();
+  const { user: { id: userId } } = c.get("jwtPayload");
+  if (!userId) {
+    return c.json({ error: "User not found" }, 400);
+  }
+  const { message } = await messageService.softDeleteMessage(messageId);
+  return c.json(message);
+});
 export default messageRoute;

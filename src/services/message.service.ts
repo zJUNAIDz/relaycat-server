@@ -99,5 +99,24 @@ class MessageService {
       return { error }
     }
   }
+  async softDeleteMessage(id: Message["id"]) {
+    try {
+      const message = await db.message.update({
+        where: {
+          id,
+        },
+        data: {
+          deleted: true
+        }
+      });
+      if (!message) {
+        return { error: "Message not deleted" }
+      }
+      return { message }
+    } catch (error) {
+      console.error("[deleteMessage] ", error)
+      return { error }
+    }
+  }
 }
 export const messageService = new MessageService();
