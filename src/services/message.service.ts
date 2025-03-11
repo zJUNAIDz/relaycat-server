@@ -31,6 +31,47 @@ class MessageService {
       return { error }
     }
   }
+  async getMessagesByChannelId(channelId: Channel["id"], cursor?: string): Promise<{
+    messages: Message[], nextCursor: Message["id"] | null; error: null
+  } | {
+    messages: null, nextCursor: null, error: string
+  }> {
+    try {
+      const messages = await db.message.findMany({
+        take: 10,
+        skip: cursor ? 1 : 0,
+        cursor: cursor ? { id: cursor } : undefined,
+        where: {
+          channelId,
+        },
+        include: {
+          member: {
+            include: {
+              user: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      });
+      if (!messages) {
+        return { messages: null, nextCursor: null, error: "Messages not found" }
+      }
+      let nextCursor = null;
+      if (messages.length === this.MESSAGE_BATCH) {
+        nextCursor = messages[this.MESSAGE_BATCH - 1].id
+
+      }
+      console.log({ messages, nextCursor })
+      return { messages, nextCursor, error: null }
+    } catch (error) {
+      console.error("[getMessages] ", error)
+      if (error instanceof PrismaClientKnownRequestError)
+        return { messages: null, nextCursor: null, error: error.message }
+      return { messages: null, nextCursor: null, error: "Failed to get messages" }
+    }
+  }
   
 }
 export const messageService = new MessageService();
