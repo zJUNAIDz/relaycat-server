@@ -1,7 +1,50 @@
-import { Member } from "@prisma/client";
+import { DirectMessage, Member } from "@prisma/client";
 import { db } from "../lib/db";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 class ConversationService {
+  private MESSAGE_BATCH = 10;
+  async getMessagesByConversationId(
+    conversationId: DirectMessage["conversationId"],
+    cursor: DirectMessage["id"],
+  ) {
+    try {
+      const messages = await db.directMessage.findMany({
+        take: 10,
+        skip: cursor ? 1 : 0,
+        cursor: cursor ? { id: cursor } : undefined,
+        where: {
+          conversationId,
+        },
+        include: {
+          member: {
+            include: {
+              user: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      });
+      if (!messages) {
+        return { messages: null, nextCursor: null, error: "Conversation Messages not found" }
+      }
+      let nextCursor = null;
+      if (messages.length === this.MESSAGE_BATCH) {
+        nextCursor = messages[this.MESSAGE_BATCH - 1].id
+
+      }
+      console.log({ messages, nextCursor })
+      return { messages, nextCursor, error: null }
+    } catch (error) {
+      console.error("[getConversationMessages] ", error)
+      if (error instanceof PrismaClientKnownRequestError)
+        return { messages: null, nextCursor: null, error: error.message }
+      return { messages: null, nextCursor: null, error: "Failed to get conversation messages" }
+    }
+  }
+
   async findConversation(memberOneId: Member["id"], memberTwoId: Member["id"]) {
     try {
       const conversation = await db.conversation.findFirst({
