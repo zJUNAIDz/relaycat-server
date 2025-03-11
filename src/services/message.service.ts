@@ -72,6 +72,32 @@ class MessageService {
       return { messages: null, nextCursor: null, error: "Failed to get messages" }
     }
   }
-  
+  async updateMessage(id: Message["id"], channelId: Channel["id"], content: Message["content"]) {
+    try {
+      const message = await db.message.update({
+        where: {
+          id,
+        },
+        data: {
+          content,
+        },
+        include: {
+          member: {
+            include: {
+              user: true
+            }
+          },
+        },
+      });
+      if (!message) {
+        return { error: "Message not updated" }
+      }
+      socketManager.io.emit(`chat:${channelId}:messages:update`, message)
+      return { message }
+    } catch (error) {
+      console.error("[updateMessage] ", error)
+      return { error }
+    }
+  }
 }
 export const messageService = new MessageService();

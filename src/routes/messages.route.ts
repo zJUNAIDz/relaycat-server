@@ -14,7 +14,7 @@ messageRoute.get("/", async (c) => {
     const { messages, nextCursor, error } = await messageService.getMessagesByChannelId(channelId, cursor);
     return c.json({ messages, nextCursor });
   }
-  return c.json({ messages:[] }, 201)
+  return c.json({ messages: [] }, 201)
   // if (conversationId) {
   //   const { messages } = await messageService.getMessagesByConversationId(conversationId);
   //   return c.json(messages);
@@ -42,6 +42,21 @@ messageRoute.post("/", async (c) => {
   if (error) {
     return c.json({ error }, 400);
   }
+  return c.json(message);
+})
+
+messageRoute.patch("/:messageId", async (c) => {
+  const { messageId } = c.req.param();
+  const { channelId } = c.req.query();
+  const { content } = await c.req.json();
+  const { user: { id: userId } } = c.get("jwtPayload");
+  if (!userId) {
+    return c.json({ error: "User not found" }, 400);
+  }
+  if (!content || content.trim() === "") {
+    return c.json({ error: "Content is required" }, 400);
+  }
+  const { message } = await messageService.updateMessage(messageId, channelId, content);
   return c.json(message);
 })
 
