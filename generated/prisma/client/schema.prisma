@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma/client"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Account {
+  userId            String?
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@index([userId])
+}
+
+model User {
+  id            String    @id @default(uuid())
+  username      String    @unique
+  name          String?
+  image         String
+  email         String    @unique
+  emailVerified DateTime?
+  bannerColor   String?
+  bannerImage   String?
+  bio           String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  servers       Server[]
+  members       Member[]
+  channels      Channel[]
+
+  @@index([id])
+}
+
+model Server {
+  id         String    @id @default(uuid())
+  name       String
+  image      String
+  inviteCode String    @unique
+  userId     String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  members    Member[]
+  channels   Channel[]
+
+  @@index([userId])
+}
+
+model Member {
+  id                    String          @id @default(uuid())
+  role                  MemberRole      @default(GUEST)
+  userId                String
+  serverId              String
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  user                  User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  server                Server          @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  Messages              Message[]
+  ConversationInitiated Conversation[]  @relation("memberOne")
+  ConversationRecieved  Conversation[]  @relation("memberTwo")
+  DirectMessage         DirectMessage[]
+
+  @@index([userId])
+  @@index([serverId])
+}
+
+model Channel {
+  id        String      @id @default(uuid())
+  name      String
+  type      ChannelType @default(TEXT)
+  userId    String
+  serverId  String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  server    Server      @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  Message   Message[]
+
+  @@index([userId])
+  @@index([serverId])
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  content   String?
+  fileUrl   String?
+  deleted   Boolean  @default(false)
+  memberId  String
+  channelId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@index([channelId])
+  @@index([memberId])
+}
+
+model Conversation {
+  id            String          @id @default(uuid())
+  memberOneId   String
+  memberTwoId   String
+  memberOne     Member          @relation("memberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
+  memberTwo     Member          @relation("memberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
+  DirectMessage DirectMessage[]
+
+  @@unique([memberOneId, memberTwoId])
+  @@index([memberTwoId])
+}
+
+model DirectMessage {
+  id             String       @id @default(uuid())
+  content        String
+  fileUrl        String
+  memberId       String
+  conversationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deleted        Boolean      @default(false)
+  member         Member       @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([memberId])
+  @@index([conversationId])
+}
+
+model AnonymousChannel {
+  id        String             @id @default(uuid())
+  name      String
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  creator   String
+  messages  AnonymousMessage[]
+}
+
+model AnonymousMessage {
+  id         String           @id @default(uuid())
+  content    String?
+  senderName String
+  channelId  String
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  channel    AnonymousChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@index([channelId])
+}
+
+enum MemberRole {
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
+enum ChannelType {
+  TEXT
+  AUDIO
+  VIDEO
+}
