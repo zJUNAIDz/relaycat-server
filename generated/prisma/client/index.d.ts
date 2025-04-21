@@ -15778,7 +15778,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     server: ServerCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
@@ -15793,7 +15793,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
@@ -15832,7 +15832,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
   }
 
   export type MemberUpdateManyMutationInput = {
@@ -18093,7 +18093,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     server: ServerCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationCreateNestedManyWithoutMemberOneInput
@@ -18106,7 +18106,7 @@ export namespace Prisma {
     role?: $Enums.MemberRole
     serverId: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
@@ -18256,7 +18256,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationCreateNestedManyWithoutMemberOneInput
@@ -18269,7 +18269,7 @@ export namespace Prisma {
     role?: $Enums.MemberRole
     userId: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
@@ -18859,7 +18859,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     server: ServerCreateNestedOneWithoutMembersInput
     ConversationInitiated?: ConversationCreateNestedManyWithoutMemberOneInput
@@ -18873,7 +18873,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
     DirectMessage?: DirectMessageUncheckedCreateNestedManyWithoutMemberInput
@@ -18979,7 +18979,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     server: ServerCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
@@ -18993,7 +18993,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
     DirectMessage?: DirectMessageUncheckedCreateNestedManyWithoutMemberInput
@@ -19008,7 +19008,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     server: ServerCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
@@ -19022,7 +19022,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     DirectMessage?: DirectMessageUncheckedCreateNestedManyWithoutMemberInput
@@ -19153,7 +19153,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     server: ServerCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
@@ -19167,7 +19167,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
@@ -19477,7 +19477,7 @@ export namespace Prisma {
     role?: $Enums.MemberRole
     serverId: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -19593,7 +19593,7 @@ export namespace Prisma {
     role?: $Enums.MemberRole
     userId: string
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
   }
 
   export type ChannelCreateManyServerInput = {

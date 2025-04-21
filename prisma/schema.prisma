@@ -22,7 +22,7 @@ model Account {
   id_token          String?
   session_state     String?
   createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt
+  updatedAt         DateTime @updatedAt @map("updated_at")
   user              User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
@@ -31,7 +31,7 @@ model Account {
 
 model User {
   id            String    @id @default(uuid())
-  username      String?    @unique
+  username      String?   @unique
   name          String?
   image         String?
   email         String    @unique
@@ -68,7 +68,7 @@ model Member {
   userId                String
   serverId              String
   createdAt             DateTime        @default(now()) @map("created_at")
-  updatedAt             DateTime        @map("updated_at")
+  updatedAt             DateTime        @updatedAt @map("updated_at")
   user                  User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   server                Server          @relation(fields: [serverId], references: [id], onDelete: Cascade)
   Messages              Message[]
