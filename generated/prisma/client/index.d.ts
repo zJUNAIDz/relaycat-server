@@ -54,6 +54,11 @@ export type Conversation = $Result.DefaultSelection<Prisma.$ConversationPayload>
  */
 export type DirectMessage = $Result.DefaultSelection<Prisma.$DirectMessagePayload>
 /**
+ * Model AnonymousUser
+ * 
+ */
+export type AnonymousUser = $Result.DefaultSelection<Prisma.$AnonymousUserPayload>
+/**
  * Model AnonymousChannel
  * 
  */
@@ -299,6 +304,16 @@ export class PrismaClient<
     * ```
     */
   get directMessage(): Prisma.DirectMessageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.anonymousUser`: Exposes CRUD operations for the **AnonymousUser** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AnonymousUsers
+    * const anonymousUsers = await prisma.anonymousUser.findMany()
+    * ```
+    */
+  get anonymousUser(): Prisma.AnonymousUserDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.anonymousChannel`: Exposes CRUD operations for the **AnonymousChannel** model.
@@ -767,6 +782,7 @@ export namespace Prisma {
     Message: 'Message',
     Conversation: 'Conversation',
     DirectMessage: 'DirectMessage',
+    AnonymousUser: 'AnonymousUser',
     AnonymousChannel: 'AnonymousChannel',
     AnonymousMessage: 'AnonymousMessage'
   };
@@ -787,7 +803,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "user" | "server" | "member" | "channel" | "message" | "conversation" | "directMessage" | "anonymousChannel" | "anonymousMessage"
+      modelProps: "account" | "user" | "server" | "member" | "channel" | "message" | "conversation" | "directMessage" | "anonymousUser" | "anonymousChannel" | "anonymousMessage"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1383,6 +1399,80 @@ export namespace Prisma {
           }
         }
       }
+      AnonymousUser: {
+        payload: Prisma.$AnonymousUserPayload<ExtArgs>
+        fields: Prisma.AnonymousUserFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AnonymousUserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnonymousUserPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AnonymousUserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnonymousUserPayload>
+          }
+          findFirst: {
+            args: Prisma.AnonymousUserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnonymousUserPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AnonymousUserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnonymousUserPayload>
+          }
+          findMany: {
+            args: Prisma.AnonymousUserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnonymousUserPayload>[]
+          }
+          create: {
+            args: Prisma.AnonymousUserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnonymousUserPayload>
+          }
+          createMany: {
+            args: Prisma.AnonymousUserCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AnonymousUserCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnonymousUserPayload>[]
+          }
+          delete: {
+            args: Prisma.AnonymousUserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnonymousUserPayload>
+          }
+          update: {
+            args: Prisma.AnonymousUserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnonymousUserPayload>
+          }
+          deleteMany: {
+            args: Prisma.AnonymousUserDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AnonymousUserUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AnonymousUserUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnonymousUserPayload>[]
+          }
+          upsert: {
+            args: Prisma.AnonymousUserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnonymousUserPayload>
+          }
+          aggregate: {
+            args: Prisma.AnonymousUserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAnonymousUser>
+          }
+          groupBy: {
+            args: Prisma.AnonymousUserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AnonymousUserGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AnonymousUserCountArgs<ExtArgs>
+            result: $Utils.Optional<AnonymousUserCountAggregateOutputType> | number
+          }
+        }
+      }
       AnonymousChannel: {
         payload: Prisma.$AnonymousChannelPayload<ExtArgs>
         fields: Prisma.AnonymousChannelFieldRefs
@@ -1623,6 +1713,7 @@ export namespace Prisma {
     message?: MessageOmit
     conversation?: ConversationOmit
     directMessage?: DirectMessageOmit
+    anonymousUser?: AnonymousUserOmit
     anonymousChannel?: AnonymousChannelOmit
     anonymousMessage?: AnonymousMessageOmit
   }
@@ -1722,14 +1813,12 @@ export namespace Prisma {
     accounts: number
     servers: number
     members: number
-    channels: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     servers?: boolean | UserCountOutputTypeCountServersArgs
     members?: boolean | UserCountOutputTypeCountMembersArgs
-    channels?: boolean | UserCountOutputTypeCountChannelsArgs
   }
 
   // Custom InputTypes
@@ -1762,13 +1851,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MemberWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountChannelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ChannelWhereInput
   }
 
 
@@ -1875,11 +1957,11 @@ export namespace Prisma {
    */
 
   export type ChannelCountOutputType = {
-    Message: number
+    Messages: number
   }
 
   export type ChannelCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Message?: boolean | ChannelCountOutputTypeCountMessageArgs
+    Messages?: boolean | ChannelCountOutputTypeCountMessagesArgs
   }
 
   // Custom InputTypes
@@ -1896,7 +1978,7 @@ export namespace Prisma {
   /**
    * ChannelCountOutputType without action
    */
-  export type ChannelCountOutputTypeCountMessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ChannelCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MessageWhereInput
   }
 
@@ -1906,11 +1988,11 @@ export namespace Prisma {
    */
 
   export type ConversationCountOutputType = {
-    DirectMessage: number
+    DirectMessages: number
   }
 
   export type ConversationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    DirectMessage?: boolean | ConversationCountOutputTypeCountDirectMessageArgs
+    DirectMessages?: boolean | ConversationCountOutputTypeCountDirectMessagesArgs
   }
 
   // Custom InputTypes
@@ -1927,8 +2009,39 @@ export namespace Prisma {
   /**
    * ConversationCountOutputType without action
    */
-  export type ConversationCountOutputTypeCountDirectMessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ConversationCountOutputTypeCountDirectMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DirectMessageWhereInput
+  }
+
+
+  /**
+   * Count Type AnonymousUserCountOutputType
+   */
+
+  export type AnonymousUserCountOutputType = {
+    AnonymousChannel: number
+  }
+
+  export type AnonymousUserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    AnonymousChannel?: boolean | AnonymousUserCountOutputTypeCountAnonymousChannelArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AnonymousUserCountOutputType without action
+   */
+  export type AnonymousUserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUserCountOutputType
+     */
+    select?: AnonymousUserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AnonymousUserCountOutputType without action
+   */
+  export type AnonymousUserCountOutputTypeCountAnonymousChannelArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnonymousChannelWhereInput
   }
 
 
@@ -3353,9 +3466,9 @@ export namespace Prisma {
 
   export type UserGroupByOutputType = {
     id: string
-    username: string
+    username: string | null
     name: string | null
-    image: string
+    image: string | null
     email: string
     emailVerified: Date | null
     bannerColor: string | null
@@ -3397,7 +3510,6 @@ export namespace Prisma {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     servers?: boolean | User$serversArgs<ExtArgs>
     members?: boolean | User$membersArgs<ExtArgs>
-    channels?: boolean | User$channelsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3448,7 +3560,6 @@ export namespace Prisma {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     servers?: boolean | User$serversArgs<ExtArgs>
     members?: boolean | User$membersArgs<ExtArgs>
-    channels?: boolean | User$channelsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3460,13 +3571,12 @@ export namespace Prisma {
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       servers: Prisma.$ServerPayload<ExtArgs>[]
       members: Prisma.$MemberPayload<ExtArgs>[]
-      channels: Prisma.$ChannelPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      username: string
+      username: string | null
       name: string | null
-      image: string
+      image: string | null
       email: string
       emailVerified: Date | null
       bannerColor: string | null
@@ -3871,7 +3981,6 @@ export namespace Prisma {
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     servers<T extends User$serversArgs<ExtArgs> = {}>(args?: Subset<T, User$serversArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     members<T extends User$membersArgs<ExtArgs> = {}>(args?: Subset<T, User$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    channels<T extends User$channelsArgs<ExtArgs> = {}>(args?: Subset<T, User$channelsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4372,30 +4481,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.channels
-   */
-  export type User$channelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Channel
-     */
-    select?: ChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Channel
-     */
-    omit?: ChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChannelInclude<ExtArgs> | null
-    where?: ChannelWhereInput
-    orderBy?: ChannelOrderByWithRelationInput | ChannelOrderByWithRelationInput[]
-    cursor?: ChannelWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ChannelScalarFieldEnum | ChannelScalarFieldEnum[]
-  }
-
-  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4562,7 +4647,7 @@ export namespace Prisma {
   export type ServerGroupByOutputType = {
     id: string
     name: string
-    image: string
+    image: string | null
     inviteCode: string
     userId: string
     createdAt: Date
@@ -4656,7 +4741,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
-      image: string
+      image: string | null
       inviteCode: string
       userId: string
       createdAt: Date
@@ -6763,30 +6848,30 @@ export namespace Prisma {
     id: string | null
     name: string | null
     type: $Enums.ChannelType | null
-    userId: string | null
     serverId: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    userId: string | null
   }
 
   export type ChannelMaxAggregateOutputType = {
     id: string | null
     name: string | null
     type: $Enums.ChannelType | null
-    userId: string | null
     serverId: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    userId: string | null
   }
 
   export type ChannelCountAggregateOutputType = {
     id: number
     name: number
     type: number
-    userId: number
     serverId: number
     createdAt: number
     updatedAt: number
+    userId: number
     _all: number
   }
 
@@ -6795,30 +6880,30 @@ export namespace Prisma {
     id?: true
     name?: true
     type?: true
-    userId?: true
     serverId?: true
     createdAt?: true
     updatedAt?: true
+    userId?: true
   }
 
   export type ChannelMaxAggregateInputType = {
     id?: true
     name?: true
     type?: true
-    userId?: true
     serverId?: true
     createdAt?: true
     updatedAt?: true
+    userId?: true
   }
 
   export type ChannelCountAggregateInputType = {
     id?: true
     name?: true
     type?: true
-    userId?: true
     serverId?: true
     createdAt?: true
     updatedAt?: true
+    userId?: true
     _all?: true
   }
 
@@ -6898,10 +6983,10 @@ export namespace Prisma {
     id: string
     name: string
     type: $Enums.ChannelType
-    userId: string
     serverId: string
     createdAt: Date
     updatedAt: Date
+    userId: string | null
     _count: ChannelCountAggregateOutputType | null
     _min: ChannelMinAggregateOutputType | null
     _max: ChannelMaxAggregateOutputType | null
@@ -6925,13 +7010,12 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     type?: boolean
-    userId?: boolean
     serverId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    userId?: boolean
     server?: boolean | ServerDefaultArgs<ExtArgs>
-    Message?: boolean | Channel$MessageArgs<ExtArgs>
+    Messages?: boolean | Channel$MessagesArgs<ExtArgs>
     _count?: boolean | ChannelCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["channel"]>
 
@@ -6939,11 +7023,10 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     type?: boolean
-    userId?: boolean
     serverId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    userId?: boolean
     server?: boolean | ServerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["channel"]>
 
@@ -6951,11 +7034,10 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     type?: boolean
-    userId?: boolean
     serverId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    userId?: boolean
     server?: boolean | ServerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["channel"]>
 
@@ -6963,43 +7045,39 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     type?: boolean
-    userId?: boolean
     serverId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userId?: boolean
   }
 
-  export type ChannelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "userId" | "serverId" | "createdAt" | "updatedAt", ExtArgs["result"]["channel"]>
+  export type ChannelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "serverId" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["channel"]>
   export type ChannelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     server?: boolean | ServerDefaultArgs<ExtArgs>
-    Message?: boolean | Channel$MessageArgs<ExtArgs>
+    Messages?: boolean | Channel$MessagesArgs<ExtArgs>
     _count?: boolean | ChannelCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ChannelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     server?: boolean | ServerDefaultArgs<ExtArgs>
   }
   export type ChannelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     server?: boolean | ServerDefaultArgs<ExtArgs>
   }
 
   export type $ChannelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Channel"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       server: Prisma.$ServerPayload<ExtArgs>
-      Message: Prisma.$MessagePayload<ExtArgs>[]
+      Messages: Prisma.$MessagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       type: $Enums.ChannelType
-      userId: string
       serverId: string
       createdAt: Date
       updatedAt: Date
+      userId: string | null
     }, ExtArgs["result"]["channel"]>
     composites: {}
   }
@@ -7394,9 +7472,8 @@ export namespace Prisma {
    */
   export interface Prisma__ChannelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     server<T extends ServerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ServerDefaultArgs<ExtArgs>>): Prisma__ServerClient<$Result.GetResult<Prisma.$ServerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    Message<T extends Channel$MessageArgs<ExtArgs> = {}>(args?: Subset<T, Channel$MessageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Messages<T extends Channel$MessagesArgs<ExtArgs> = {}>(args?: Subset<T, Channel$MessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7429,10 +7506,10 @@ export namespace Prisma {
     readonly id: FieldRef<"Channel", 'String'>
     readonly name: FieldRef<"Channel", 'String'>
     readonly type: FieldRef<"Channel", 'ChannelType'>
-    readonly userId: FieldRef<"Channel", 'String'>
     readonly serverId: FieldRef<"Channel", 'String'>
     readonly createdAt: FieldRef<"Channel", 'DateTime'>
     readonly updatedAt: FieldRef<"Channel", 'DateTime'>
+    readonly userId: FieldRef<"Channel", 'String'>
   }
     
 
@@ -7829,9 +7906,9 @@ export namespace Prisma {
   }
 
   /**
-   * Channel.Message
+   * Channel.Messages
    */
-  export type Channel$MessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Channel$MessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Message
      */
@@ -9126,7 +9203,7 @@ export namespace Prisma {
     memberTwoId?: boolean
     memberOne?: boolean | MemberDefaultArgs<ExtArgs>
     memberTwo?: boolean | MemberDefaultArgs<ExtArgs>
-    DirectMessage?: boolean | Conversation$DirectMessageArgs<ExtArgs>
+    DirectMessages?: boolean | Conversation$DirectMessagesArgs<ExtArgs>
     _count?: boolean | ConversationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conversation"]>
 
@@ -9156,7 +9233,7 @@ export namespace Prisma {
   export type ConversationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     memberOne?: boolean | MemberDefaultArgs<ExtArgs>
     memberTwo?: boolean | MemberDefaultArgs<ExtArgs>
-    DirectMessage?: boolean | Conversation$DirectMessageArgs<ExtArgs>
+    DirectMessages?: boolean | Conversation$DirectMessagesArgs<ExtArgs>
     _count?: boolean | ConversationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ConversationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9173,7 +9250,7 @@ export namespace Prisma {
     objects: {
       memberOne: Prisma.$MemberPayload<ExtArgs>
       memberTwo: Prisma.$MemberPayload<ExtArgs>
-      DirectMessage: Prisma.$DirectMessagePayload<ExtArgs>[]
+      DirectMessages: Prisma.$DirectMessagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9575,7 +9652,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     memberOne<T extends MemberDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MemberDefaultArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     memberTwo<T extends MemberDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MemberDefaultArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    DirectMessage<T extends Conversation$DirectMessageArgs<ExtArgs> = {}>(args?: Subset<T, Conversation$DirectMessageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    DirectMessages<T extends Conversation$DirectMessagesArgs<ExtArgs> = {}>(args?: Subset<T, Conversation$DirectMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10004,9 +10081,9 @@ export namespace Prisma {
   }
 
   /**
-   * Conversation.DirectMessage
+   * Conversation.DirectMessages
    */
-  export type Conversation$DirectMessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Conversation$DirectMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the DirectMessage
      */
@@ -10199,8 +10276,8 @@ export namespace Prisma {
 
   export type DirectMessageGroupByOutputType = {
     id: string
-    content: string
-    fileUrl: string
+    content: string | null
+    fileUrl: string | null
     memberId: string
     conversationId: string
     createdAt: Date
@@ -10297,8 +10374,8 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      content: string
-      fileUrl: string
+      content: string | null
+      fileUrl: string | null
       memberId: string
       conversationId: string
       createdAt: Date
@@ -11152,6 +11229,1050 @@ export namespace Prisma {
 
 
   /**
+   * Model AnonymousUser
+   */
+
+  export type AggregateAnonymousUser = {
+    _count: AnonymousUserCountAggregateOutputType | null
+    _min: AnonymousUserMinAggregateOutputType | null
+    _max: AnonymousUserMaxAggregateOutputType | null
+  }
+
+  export type AnonymousUserMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+  }
+
+  export type AnonymousUserMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+  }
+
+  export type AnonymousUserCountAggregateOutputType = {
+    id: number
+    name: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AnonymousUserMinAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+  }
+
+  export type AnonymousUserMaxAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+  }
+
+  export type AnonymousUserCountAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AnonymousUserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnonymousUser to aggregate.
+     */
+    where?: AnonymousUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnonymousUsers to fetch.
+     */
+    orderBy?: AnonymousUserOrderByWithRelationInput | AnonymousUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AnonymousUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnonymousUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnonymousUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AnonymousUsers
+    **/
+    _count?: true | AnonymousUserCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AnonymousUserMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AnonymousUserMaxAggregateInputType
+  }
+
+  export type GetAnonymousUserAggregateType<T extends AnonymousUserAggregateArgs> = {
+        [P in keyof T & keyof AggregateAnonymousUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAnonymousUser[P]>
+      : GetScalarType<T[P], AggregateAnonymousUser[P]>
+  }
+
+
+
+
+  export type AnonymousUserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnonymousUserWhereInput
+    orderBy?: AnonymousUserOrderByWithAggregationInput | AnonymousUserOrderByWithAggregationInput[]
+    by: AnonymousUserScalarFieldEnum[] | AnonymousUserScalarFieldEnum
+    having?: AnonymousUserScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AnonymousUserCountAggregateInputType | true
+    _min?: AnonymousUserMinAggregateInputType
+    _max?: AnonymousUserMaxAggregateInputType
+  }
+
+  export type AnonymousUserGroupByOutputType = {
+    id: string
+    name: string
+    createdAt: Date
+    _count: AnonymousUserCountAggregateOutputType | null
+    _min: AnonymousUserMinAggregateOutputType | null
+    _max: AnonymousUserMaxAggregateOutputType | null
+  }
+
+  type GetAnonymousUserGroupByPayload<T extends AnonymousUserGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AnonymousUserGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AnonymousUserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AnonymousUserGroupByOutputType[P]>
+            : GetScalarType<T[P], AnonymousUserGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AnonymousUserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    AnonymousChannel?: boolean | AnonymousUser$AnonymousChannelArgs<ExtArgs>
+    _count?: boolean | AnonymousUserCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["anonymousUser"]>
+
+  export type AnonymousUserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["anonymousUser"]>
+
+  export type AnonymousUserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["anonymousUser"]>
+
+  export type AnonymousUserSelectScalar = {
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+  }
+
+  export type AnonymousUserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt", ExtArgs["result"]["anonymousUser"]>
+  export type AnonymousUserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    AnonymousChannel?: boolean | AnonymousUser$AnonymousChannelArgs<ExtArgs>
+    _count?: boolean | AnonymousUserCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AnonymousUserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type AnonymousUserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $AnonymousUserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AnonymousUser"
+    objects: {
+      AnonymousChannel: Prisma.$AnonymousChannelPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      createdAt: Date
+    }, ExtArgs["result"]["anonymousUser"]>
+    composites: {}
+  }
+
+  type AnonymousUserGetPayload<S extends boolean | null | undefined | AnonymousUserDefaultArgs> = $Result.GetResult<Prisma.$AnonymousUserPayload, S>
+
+  type AnonymousUserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AnonymousUserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AnonymousUserCountAggregateInputType | true
+    }
+
+  export interface AnonymousUserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AnonymousUser'], meta: { name: 'AnonymousUser' } }
+    /**
+     * Find zero or one AnonymousUser that matches the filter.
+     * @param {AnonymousUserFindUniqueArgs} args - Arguments to find a AnonymousUser
+     * @example
+     * // Get one AnonymousUser
+     * const anonymousUser = await prisma.anonymousUser.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AnonymousUserFindUniqueArgs>(args: SelectSubset<T, AnonymousUserFindUniqueArgs<ExtArgs>>): Prisma__AnonymousUserClient<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AnonymousUser that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AnonymousUserFindUniqueOrThrowArgs} args - Arguments to find a AnonymousUser
+     * @example
+     * // Get one AnonymousUser
+     * const anonymousUser = await prisma.anonymousUser.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AnonymousUserFindUniqueOrThrowArgs>(args: SelectSubset<T, AnonymousUserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AnonymousUserClient<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnonymousUser that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnonymousUserFindFirstArgs} args - Arguments to find a AnonymousUser
+     * @example
+     * // Get one AnonymousUser
+     * const anonymousUser = await prisma.anonymousUser.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AnonymousUserFindFirstArgs>(args?: SelectSubset<T, AnonymousUserFindFirstArgs<ExtArgs>>): Prisma__AnonymousUserClient<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnonymousUser that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnonymousUserFindFirstOrThrowArgs} args - Arguments to find a AnonymousUser
+     * @example
+     * // Get one AnonymousUser
+     * const anonymousUser = await prisma.anonymousUser.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AnonymousUserFindFirstOrThrowArgs>(args?: SelectSubset<T, AnonymousUserFindFirstOrThrowArgs<ExtArgs>>): Prisma__AnonymousUserClient<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AnonymousUsers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnonymousUserFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AnonymousUsers
+     * const anonymousUsers = await prisma.anonymousUser.findMany()
+     * 
+     * // Get first 10 AnonymousUsers
+     * const anonymousUsers = await prisma.anonymousUser.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const anonymousUserWithIdOnly = await prisma.anonymousUser.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AnonymousUserFindManyArgs>(args?: SelectSubset<T, AnonymousUserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AnonymousUser.
+     * @param {AnonymousUserCreateArgs} args - Arguments to create a AnonymousUser.
+     * @example
+     * // Create one AnonymousUser
+     * const AnonymousUser = await prisma.anonymousUser.create({
+     *   data: {
+     *     // ... data to create a AnonymousUser
+     *   }
+     * })
+     * 
+     */
+    create<T extends AnonymousUserCreateArgs>(args: SelectSubset<T, AnonymousUserCreateArgs<ExtArgs>>): Prisma__AnonymousUserClient<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AnonymousUsers.
+     * @param {AnonymousUserCreateManyArgs} args - Arguments to create many AnonymousUsers.
+     * @example
+     * // Create many AnonymousUsers
+     * const anonymousUser = await prisma.anonymousUser.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AnonymousUserCreateManyArgs>(args?: SelectSubset<T, AnonymousUserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AnonymousUsers and returns the data saved in the database.
+     * @param {AnonymousUserCreateManyAndReturnArgs} args - Arguments to create many AnonymousUsers.
+     * @example
+     * // Create many AnonymousUsers
+     * const anonymousUser = await prisma.anonymousUser.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AnonymousUsers and only return the `id`
+     * const anonymousUserWithIdOnly = await prisma.anonymousUser.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AnonymousUserCreateManyAndReturnArgs>(args?: SelectSubset<T, AnonymousUserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AnonymousUser.
+     * @param {AnonymousUserDeleteArgs} args - Arguments to delete one AnonymousUser.
+     * @example
+     * // Delete one AnonymousUser
+     * const AnonymousUser = await prisma.anonymousUser.delete({
+     *   where: {
+     *     // ... filter to delete one AnonymousUser
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AnonymousUserDeleteArgs>(args: SelectSubset<T, AnonymousUserDeleteArgs<ExtArgs>>): Prisma__AnonymousUserClient<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AnonymousUser.
+     * @param {AnonymousUserUpdateArgs} args - Arguments to update one AnonymousUser.
+     * @example
+     * // Update one AnonymousUser
+     * const anonymousUser = await prisma.anonymousUser.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AnonymousUserUpdateArgs>(args: SelectSubset<T, AnonymousUserUpdateArgs<ExtArgs>>): Prisma__AnonymousUserClient<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AnonymousUsers.
+     * @param {AnonymousUserDeleteManyArgs} args - Arguments to filter AnonymousUsers to delete.
+     * @example
+     * // Delete a few AnonymousUsers
+     * const { count } = await prisma.anonymousUser.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AnonymousUserDeleteManyArgs>(args?: SelectSubset<T, AnonymousUserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnonymousUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnonymousUserUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AnonymousUsers
+     * const anonymousUser = await prisma.anonymousUser.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AnonymousUserUpdateManyArgs>(args: SelectSubset<T, AnonymousUserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnonymousUsers and returns the data updated in the database.
+     * @param {AnonymousUserUpdateManyAndReturnArgs} args - Arguments to update many AnonymousUsers.
+     * @example
+     * // Update many AnonymousUsers
+     * const anonymousUser = await prisma.anonymousUser.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AnonymousUsers and only return the `id`
+     * const anonymousUserWithIdOnly = await prisma.anonymousUser.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AnonymousUserUpdateManyAndReturnArgs>(args: SelectSubset<T, AnonymousUserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AnonymousUser.
+     * @param {AnonymousUserUpsertArgs} args - Arguments to update or create a AnonymousUser.
+     * @example
+     * // Update or create a AnonymousUser
+     * const anonymousUser = await prisma.anonymousUser.upsert({
+     *   create: {
+     *     // ... data to create a AnonymousUser
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AnonymousUser we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AnonymousUserUpsertArgs>(args: SelectSubset<T, AnonymousUserUpsertArgs<ExtArgs>>): Prisma__AnonymousUserClient<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AnonymousUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnonymousUserCountArgs} args - Arguments to filter AnonymousUsers to count.
+     * @example
+     * // Count the number of AnonymousUsers
+     * const count = await prisma.anonymousUser.count({
+     *   where: {
+     *     // ... the filter for the AnonymousUsers we want to count
+     *   }
+     * })
+    **/
+    count<T extends AnonymousUserCountArgs>(
+      args?: Subset<T, AnonymousUserCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AnonymousUserCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AnonymousUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnonymousUserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AnonymousUserAggregateArgs>(args: Subset<T, AnonymousUserAggregateArgs>): Prisma.PrismaPromise<GetAnonymousUserAggregateType<T>>
+
+    /**
+     * Group by AnonymousUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnonymousUserGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AnonymousUserGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AnonymousUserGroupByArgs['orderBy'] }
+        : { orderBy?: AnonymousUserGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AnonymousUserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAnonymousUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AnonymousUser model
+   */
+  readonly fields: AnonymousUserFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AnonymousUser.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AnonymousUserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    AnonymousChannel<T extends AnonymousUser$AnonymousChannelArgs<ExtArgs> = {}>(args?: Subset<T, AnonymousUser$AnonymousChannelArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnonymousChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AnonymousUser model
+   */
+  interface AnonymousUserFieldRefs {
+    readonly id: FieldRef<"AnonymousUser", 'String'>
+    readonly name: FieldRef<"AnonymousUser", 'String'>
+    readonly createdAt: FieldRef<"AnonymousUser", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AnonymousUser findUnique
+   */
+  export type AnonymousUserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousUserInclude<ExtArgs> | null
+    /**
+     * Filter, which AnonymousUser to fetch.
+     */
+    where: AnonymousUserWhereUniqueInput
+  }
+
+  /**
+   * AnonymousUser findUniqueOrThrow
+   */
+  export type AnonymousUserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousUserInclude<ExtArgs> | null
+    /**
+     * Filter, which AnonymousUser to fetch.
+     */
+    where: AnonymousUserWhereUniqueInput
+  }
+
+  /**
+   * AnonymousUser findFirst
+   */
+  export type AnonymousUserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousUserInclude<ExtArgs> | null
+    /**
+     * Filter, which AnonymousUser to fetch.
+     */
+    where?: AnonymousUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnonymousUsers to fetch.
+     */
+    orderBy?: AnonymousUserOrderByWithRelationInput | AnonymousUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnonymousUsers.
+     */
+    cursor?: AnonymousUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnonymousUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnonymousUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnonymousUsers.
+     */
+    distinct?: AnonymousUserScalarFieldEnum | AnonymousUserScalarFieldEnum[]
+  }
+
+  /**
+   * AnonymousUser findFirstOrThrow
+   */
+  export type AnonymousUserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousUserInclude<ExtArgs> | null
+    /**
+     * Filter, which AnonymousUser to fetch.
+     */
+    where?: AnonymousUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnonymousUsers to fetch.
+     */
+    orderBy?: AnonymousUserOrderByWithRelationInput | AnonymousUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnonymousUsers.
+     */
+    cursor?: AnonymousUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnonymousUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnonymousUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnonymousUsers.
+     */
+    distinct?: AnonymousUserScalarFieldEnum | AnonymousUserScalarFieldEnum[]
+  }
+
+  /**
+   * AnonymousUser findMany
+   */
+  export type AnonymousUserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousUserInclude<ExtArgs> | null
+    /**
+     * Filter, which AnonymousUsers to fetch.
+     */
+    where?: AnonymousUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnonymousUsers to fetch.
+     */
+    orderBy?: AnonymousUserOrderByWithRelationInput | AnonymousUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AnonymousUsers.
+     */
+    cursor?: AnonymousUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnonymousUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnonymousUsers.
+     */
+    skip?: number
+    distinct?: AnonymousUserScalarFieldEnum | AnonymousUserScalarFieldEnum[]
+  }
+
+  /**
+   * AnonymousUser create
+   */
+  export type AnonymousUserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousUserInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AnonymousUser.
+     */
+    data: XOR<AnonymousUserCreateInput, AnonymousUserUncheckedCreateInput>
+  }
+
+  /**
+   * AnonymousUser createMany
+   */
+  export type AnonymousUserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AnonymousUsers.
+     */
+    data: AnonymousUserCreateManyInput | AnonymousUserCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AnonymousUser createManyAndReturn
+   */
+  export type AnonymousUserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * The data used to create many AnonymousUsers.
+     */
+    data: AnonymousUserCreateManyInput | AnonymousUserCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AnonymousUser update
+   */
+  export type AnonymousUserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousUserInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AnonymousUser.
+     */
+    data: XOR<AnonymousUserUpdateInput, AnonymousUserUncheckedUpdateInput>
+    /**
+     * Choose, which AnonymousUser to update.
+     */
+    where: AnonymousUserWhereUniqueInput
+  }
+
+  /**
+   * AnonymousUser updateMany
+   */
+  export type AnonymousUserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AnonymousUsers.
+     */
+    data: XOR<AnonymousUserUpdateManyMutationInput, AnonymousUserUncheckedUpdateManyInput>
+    /**
+     * Filter which AnonymousUsers to update
+     */
+    where?: AnonymousUserWhereInput
+    /**
+     * Limit how many AnonymousUsers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnonymousUser updateManyAndReturn
+   */
+  export type AnonymousUserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * The data used to update AnonymousUsers.
+     */
+    data: XOR<AnonymousUserUpdateManyMutationInput, AnonymousUserUncheckedUpdateManyInput>
+    /**
+     * Filter which AnonymousUsers to update
+     */
+    where?: AnonymousUserWhereInput
+    /**
+     * Limit how many AnonymousUsers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnonymousUser upsert
+   */
+  export type AnonymousUserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousUserInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AnonymousUser to update in case it exists.
+     */
+    where: AnonymousUserWhereUniqueInput
+    /**
+     * In case the AnonymousUser found by the `where` argument doesn't exist, create a new AnonymousUser with this data.
+     */
+    create: XOR<AnonymousUserCreateInput, AnonymousUserUncheckedCreateInput>
+    /**
+     * In case the AnonymousUser was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AnonymousUserUpdateInput, AnonymousUserUncheckedUpdateInput>
+  }
+
+  /**
+   * AnonymousUser delete
+   */
+  export type AnonymousUserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousUserInclude<ExtArgs> | null
+    /**
+     * Filter which AnonymousUser to delete.
+     */
+    where: AnonymousUserWhereUniqueInput
+  }
+
+  /**
+   * AnonymousUser deleteMany
+   */
+  export type AnonymousUserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnonymousUsers to delete
+     */
+    where?: AnonymousUserWhereInput
+    /**
+     * Limit how many AnonymousUsers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnonymousUser.AnonymousChannel
+   */
+  export type AnonymousUser$AnonymousChannelArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousChannel
+     */
+    select?: AnonymousChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousChannel
+     */
+    omit?: AnonymousChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousChannelInclude<ExtArgs> | null
+    where?: AnonymousChannelWhereInput
+    orderBy?: AnonymousChannelOrderByWithRelationInput | AnonymousChannelOrderByWithRelationInput[]
+    cursor?: AnonymousChannelWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnonymousChannelScalarFieldEnum | AnonymousChannelScalarFieldEnum[]
+  }
+
+  /**
+   * AnonymousUser without action
+   */
+  export type AnonymousUserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnonymousUser
+     */
+    select?: AnonymousUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnonymousUser
+     */
+    omit?: AnonymousUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousUserInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model AnonymousChannel
    */
 
@@ -11166,7 +12287,7 @@ export namespace Prisma {
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    creator: string | null
+    anonymousUserId: string | null
   }
 
   export type AnonymousChannelMaxAggregateOutputType = {
@@ -11174,7 +12295,7 @@ export namespace Prisma {
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    creator: string | null
+    anonymousUserId: string | null
   }
 
   export type AnonymousChannelCountAggregateOutputType = {
@@ -11182,7 +12303,7 @@ export namespace Prisma {
     name: number
     createdAt: number
     updatedAt: number
-    creator: number
+    anonymousUserId: number
     _all: number
   }
 
@@ -11192,7 +12313,7 @@ export namespace Prisma {
     name?: true
     createdAt?: true
     updatedAt?: true
-    creator?: true
+    anonymousUserId?: true
   }
 
   export type AnonymousChannelMaxAggregateInputType = {
@@ -11200,7 +12321,7 @@ export namespace Prisma {
     name?: true
     createdAt?: true
     updatedAt?: true
-    creator?: true
+    anonymousUserId?: true
   }
 
   export type AnonymousChannelCountAggregateInputType = {
@@ -11208,7 +12329,7 @@ export namespace Prisma {
     name?: true
     createdAt?: true
     updatedAt?: true
-    creator?: true
+    anonymousUserId?: true
     _all?: true
   }
 
@@ -11289,7 +12410,7 @@ export namespace Prisma {
     name: string
     createdAt: Date
     updatedAt: Date
-    creator: string
+    anonymousUserId: string
     _count: AnonymousChannelCountAggregateOutputType | null
     _min: AnonymousChannelMinAggregateOutputType | null
     _max: AnonymousChannelMaxAggregateOutputType | null
@@ -11314,7 +12435,8 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    creator?: boolean
+    anonymousUserId?: boolean
+    creator?: boolean | AnonymousUserDefaultArgs<ExtArgs>
     messages?: boolean | AnonymousChannel$messagesArgs<ExtArgs>
     _count?: boolean | AnonymousChannelCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["anonymousChannel"]>
@@ -11324,7 +12446,8 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    creator?: boolean
+    anonymousUserId?: boolean
+    creator?: boolean | AnonymousUserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["anonymousChannel"]>
 
   export type AnonymousChannelSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11332,7 +12455,8 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    creator?: boolean
+    anonymousUserId?: boolean
+    creator?: boolean | AnonymousUserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["anonymousChannel"]>
 
   export type AnonymousChannelSelectScalar = {
@@ -11340,20 +12464,26 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    creator?: boolean
+    anonymousUserId?: boolean
   }
 
-  export type AnonymousChannelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt" | "creator", ExtArgs["result"]["anonymousChannel"]>
+  export type AnonymousChannelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt" | "anonymousUserId", ExtArgs["result"]["anonymousChannel"]>
   export type AnonymousChannelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    creator?: boolean | AnonymousUserDefaultArgs<ExtArgs>
     messages?: boolean | AnonymousChannel$messagesArgs<ExtArgs>
     _count?: boolean | AnonymousChannelCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type AnonymousChannelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type AnonymousChannelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type AnonymousChannelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    creator?: boolean | AnonymousUserDefaultArgs<ExtArgs>
+  }
+  export type AnonymousChannelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    creator?: boolean | AnonymousUserDefaultArgs<ExtArgs>
+  }
 
   export type $AnonymousChannelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AnonymousChannel"
     objects: {
+      creator: Prisma.$AnonymousUserPayload<ExtArgs>
       messages: Prisma.$AnonymousMessagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -11361,7 +12491,7 @@ export namespace Prisma {
       name: string
       createdAt: Date
       updatedAt: Date
-      creator: string
+      anonymousUserId: string
     }, ExtArgs["result"]["anonymousChannel"]>
     composites: {}
   }
@@ -11756,6 +12886,7 @@ export namespace Prisma {
    */
   export interface Prisma__AnonymousChannelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    creator<T extends AnonymousUserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AnonymousUserDefaultArgs<ExtArgs>>): Prisma__AnonymousUserClient<$Result.GetResult<Prisma.$AnonymousUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     messages<T extends AnonymousChannel$messagesArgs<ExtArgs> = {}>(args?: Subset<T, AnonymousChannel$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnonymousMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -11790,7 +12921,7 @@ export namespace Prisma {
     readonly name: FieldRef<"AnonymousChannel", 'String'>
     readonly createdAt: FieldRef<"AnonymousChannel", 'DateTime'>
     readonly updatedAt: FieldRef<"AnonymousChannel", 'DateTime'>
-    readonly creator: FieldRef<"AnonymousChannel", 'String'>
+    readonly anonymousUserId: FieldRef<"AnonymousChannel", 'String'>
   }
     
 
@@ -12040,6 +13171,10 @@ export namespace Prisma {
      */
     data: AnonymousChannelCreateManyInput | AnonymousChannelCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousChannelIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -12110,6 +13245,10 @@ export namespace Prisma {
      * Limit how many AnonymousChannels to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnonymousChannelIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -13371,10 +14510,10 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     type: 'type',
-    userId: 'userId',
     serverId: 'serverId',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    userId: 'userId'
   };
 
   export type ChannelScalarFieldEnum = (typeof ChannelScalarFieldEnum)[keyof typeof ChannelScalarFieldEnum]
@@ -13417,12 +14556,21 @@ export namespace Prisma {
   export type DirectMessageScalarFieldEnum = (typeof DirectMessageScalarFieldEnum)[keyof typeof DirectMessageScalarFieldEnum]
 
 
+  export const AnonymousUserScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    createdAt: 'createdAt'
+  };
+
+  export type AnonymousUserScalarFieldEnum = (typeof AnonymousUserScalarFieldEnum)[keyof typeof AnonymousUserScalarFieldEnum]
+
+
   export const AnonymousChannelScalarFieldEnum: {
     id: 'id',
     name: 'name',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    creator: 'creator'
+    anonymousUserId: 'anonymousUserId'
   };
 
   export type AnonymousChannelScalarFieldEnum = (typeof AnonymousChannelScalarFieldEnum)[keyof typeof AnonymousChannelScalarFieldEnum]
@@ -13666,9 +14814,9 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     id?: StringFilter<"User"> | string
-    username?: StringFilter<"User"> | string
+    username?: StringNullableFilter<"User"> | string | null
     name?: StringNullableFilter<"User"> | string | null
-    image?: StringFilter<"User"> | string
+    image?: StringNullableFilter<"User"> | string | null
     email?: StringFilter<"User"> | string
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     bannerColor?: StringNullableFilter<"User"> | string | null
@@ -13679,14 +14827,13 @@ export namespace Prisma {
     accounts?: AccountListRelationFilter
     servers?: ServerListRelationFilter
     members?: MemberListRelationFilter
-    channels?: ChannelListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
-    username?: SortOrder
+    username?: SortOrderInput | SortOrder
     name?: SortOrderInput | SortOrder
-    image?: SortOrder
+    image?: SortOrderInput | SortOrder
     email?: SortOrder
     emailVerified?: SortOrderInput | SortOrder
     bannerColor?: SortOrderInput | SortOrder
@@ -13697,7 +14844,6 @@ export namespace Prisma {
     accounts?: AccountOrderByRelationAggregateInput
     servers?: ServerOrderByRelationAggregateInput
     members?: MemberOrderByRelationAggregateInput
-    channels?: ChannelOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -13708,7 +14854,7 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
-    image?: StringFilter<"User"> | string
+    image?: StringNullableFilter<"User"> | string | null
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     bannerColor?: StringNullableFilter<"User"> | string | null
     bannerImage?: StringNullableFilter<"User"> | string | null
@@ -13718,14 +14864,13 @@ export namespace Prisma {
     accounts?: AccountListRelationFilter
     servers?: ServerListRelationFilter
     members?: MemberListRelationFilter
-    channels?: ChannelListRelationFilter
   }, "id" | "username" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
-    username?: SortOrder
+    username?: SortOrderInput | SortOrder
     name?: SortOrderInput | SortOrder
-    image?: SortOrder
+    image?: SortOrderInput | SortOrder
     email?: SortOrder
     emailVerified?: SortOrderInput | SortOrder
     bannerColor?: SortOrderInput | SortOrder
@@ -13743,9 +14888,9 @@ export namespace Prisma {
     OR?: UserScalarWhereWithAggregatesInput[]
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"User"> | string
-    username?: StringWithAggregatesFilter<"User"> | string
+    username?: StringNullableWithAggregatesFilter<"User"> | string | null
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
-    image?: StringWithAggregatesFilter<"User"> | string
+    image?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringWithAggregatesFilter<"User"> | string
     emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     bannerColor?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -13761,7 +14906,7 @@ export namespace Prisma {
     NOT?: ServerWhereInput | ServerWhereInput[]
     id?: StringFilter<"Server"> | string
     name?: StringFilter<"Server"> | string
-    image?: StringFilter<"Server"> | string
+    image?: StringNullableFilter<"Server"> | string | null
     inviteCode?: StringFilter<"Server"> | string
     userId?: StringFilter<"Server"> | string
     createdAt?: DateTimeFilter<"Server"> | Date | string
@@ -13774,7 +14919,7 @@ export namespace Prisma {
   export type ServerOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    image?: SortOrder
+    image?: SortOrderInput | SortOrder
     inviteCode?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
@@ -13791,7 +14936,7 @@ export namespace Prisma {
     OR?: ServerWhereInput[]
     NOT?: ServerWhereInput | ServerWhereInput[]
     name?: StringFilter<"Server"> | string
-    image?: StringFilter<"Server"> | string
+    image?: StringNullableFilter<"Server"> | string | null
     userId?: StringFilter<"Server"> | string
     createdAt?: DateTimeFilter<"Server"> | Date | string
     updatedAt?: DateTimeFilter<"Server"> | Date | string
@@ -13803,7 +14948,7 @@ export namespace Prisma {
   export type ServerOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    image?: SortOrder
+    image?: SortOrderInput | SortOrder
     inviteCode?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
@@ -13819,7 +14964,7 @@ export namespace Prisma {
     NOT?: ServerScalarWhereWithAggregatesInput | ServerScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Server"> | string
     name?: StringWithAggregatesFilter<"Server"> | string
-    image?: StringWithAggregatesFilter<"Server"> | string
+    image?: StringNullableWithAggregatesFilter<"Server"> | string | null
     inviteCode?: StringWithAggregatesFilter<"Server"> | string
     userId?: StringWithAggregatesFilter<"Server"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Server"> | Date | string
@@ -13861,6 +15006,7 @@ export namespace Prisma {
 
   export type MemberWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    userId_serverId?: MemberUserIdServerIdCompoundUniqueInput
     AND?: MemberWhereInput | MemberWhereInput[]
     OR?: MemberWhereInput[]
     NOT?: MemberWhereInput | MemberWhereInput[]
@@ -13875,7 +15021,7 @@ export namespace Prisma {
     ConversationInitiated?: ConversationListRelationFilter
     ConversationRecieved?: ConversationListRelationFilter
     DirectMessage?: DirectMessageListRelationFilter
-  }, "id">
+  }, "id" | "userId_serverId">
 
   export type MemberOrderByWithAggregationInput = {
     id?: SortOrder
@@ -13908,26 +15054,24 @@ export namespace Prisma {
     id?: StringFilter<"Channel"> | string
     name?: StringFilter<"Channel"> | string
     type?: EnumChannelTypeFilter<"Channel"> | $Enums.ChannelType
-    userId?: StringFilter<"Channel"> | string
     serverId?: StringFilter<"Channel"> | string
     createdAt?: DateTimeFilter<"Channel"> | Date | string
     updatedAt?: DateTimeFilter<"Channel"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    userId?: StringNullableFilter<"Channel"> | string | null
     server?: XOR<ServerScalarRelationFilter, ServerWhereInput>
-    Message?: MessageListRelationFilter
+    Messages?: MessageListRelationFilter
   }
 
   export type ChannelOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     type?: SortOrder
-    userId?: SortOrder
     serverId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
+    userId?: SortOrderInput | SortOrder
     server?: ServerOrderByWithRelationInput
-    Message?: MessageOrderByRelationAggregateInput
+    Messages?: MessageOrderByRelationAggregateInput
   }
 
   export type ChannelWhereUniqueInput = Prisma.AtLeast<{
@@ -13937,23 +15081,22 @@ export namespace Prisma {
     NOT?: ChannelWhereInput | ChannelWhereInput[]
     name?: StringFilter<"Channel"> | string
     type?: EnumChannelTypeFilter<"Channel"> | $Enums.ChannelType
-    userId?: StringFilter<"Channel"> | string
     serverId?: StringFilter<"Channel"> | string
     createdAt?: DateTimeFilter<"Channel"> | Date | string
     updatedAt?: DateTimeFilter<"Channel"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    userId?: StringNullableFilter<"Channel"> | string | null
     server?: XOR<ServerScalarRelationFilter, ServerWhereInput>
-    Message?: MessageListRelationFilter
+    Messages?: MessageListRelationFilter
   }, "id">
 
   export type ChannelOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     type?: SortOrder
-    userId?: SortOrder
     serverId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrderInput | SortOrder
     _count?: ChannelCountOrderByAggregateInput
     _max?: ChannelMaxOrderByAggregateInput
     _min?: ChannelMinOrderByAggregateInput
@@ -13966,10 +15109,10 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Channel"> | string
     name?: StringWithAggregatesFilter<"Channel"> | string
     type?: EnumChannelTypeWithAggregatesFilter<"Channel"> | $Enums.ChannelType
-    userId?: StringWithAggregatesFilter<"Channel"> | string
     serverId?: StringWithAggregatesFilter<"Channel"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Channel"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Channel"> | Date | string
+    userId?: StringNullableWithAggregatesFilter<"Channel"> | string | null
   }
 
   export type MessageWhereInput = {
@@ -14054,7 +15197,7 @@ export namespace Prisma {
     memberTwoId?: StringFilter<"Conversation"> | string
     memberOne?: XOR<MemberScalarRelationFilter, MemberWhereInput>
     memberTwo?: XOR<MemberScalarRelationFilter, MemberWhereInput>
-    DirectMessage?: DirectMessageListRelationFilter
+    DirectMessages?: DirectMessageListRelationFilter
   }
 
   export type ConversationOrderByWithRelationInput = {
@@ -14063,7 +15206,7 @@ export namespace Prisma {
     memberTwoId?: SortOrder
     memberOne?: MemberOrderByWithRelationInput
     memberTwo?: MemberOrderByWithRelationInput
-    DirectMessage?: DirectMessageOrderByRelationAggregateInput
+    DirectMessages?: DirectMessageOrderByRelationAggregateInput
   }
 
   export type ConversationWhereUniqueInput = Prisma.AtLeast<{
@@ -14076,7 +15219,7 @@ export namespace Prisma {
     memberTwoId?: StringFilter<"Conversation"> | string
     memberOne?: XOR<MemberScalarRelationFilter, MemberWhereInput>
     memberTwo?: XOR<MemberScalarRelationFilter, MemberWhereInput>
-    DirectMessage?: DirectMessageListRelationFilter
+    DirectMessages?: DirectMessageListRelationFilter
   }, "id" | "memberOneId_memberTwoId">
 
   export type ConversationOrderByWithAggregationInput = {
@@ -14102,8 +15245,8 @@ export namespace Prisma {
     OR?: DirectMessageWhereInput[]
     NOT?: DirectMessageWhereInput | DirectMessageWhereInput[]
     id?: StringFilter<"DirectMessage"> | string
-    content?: StringFilter<"DirectMessage"> | string
-    fileUrl?: StringFilter<"DirectMessage"> | string
+    content?: StringNullableFilter<"DirectMessage"> | string | null
+    fileUrl?: StringNullableFilter<"DirectMessage"> | string | null
     memberId?: StringFilter<"DirectMessage"> | string
     conversationId?: StringFilter<"DirectMessage"> | string
     createdAt?: DateTimeFilter<"DirectMessage"> | Date | string
@@ -14115,8 +15258,8 @@ export namespace Prisma {
 
   export type DirectMessageOrderByWithRelationInput = {
     id?: SortOrder
-    content?: SortOrder
-    fileUrl?: SortOrder
+    content?: SortOrderInput | SortOrder
+    fileUrl?: SortOrderInput | SortOrder
     memberId?: SortOrder
     conversationId?: SortOrder
     createdAt?: SortOrder
@@ -14131,8 +15274,8 @@ export namespace Prisma {
     AND?: DirectMessageWhereInput | DirectMessageWhereInput[]
     OR?: DirectMessageWhereInput[]
     NOT?: DirectMessageWhereInput | DirectMessageWhereInput[]
-    content?: StringFilter<"DirectMessage"> | string
-    fileUrl?: StringFilter<"DirectMessage"> | string
+    content?: StringNullableFilter<"DirectMessage"> | string | null
+    fileUrl?: StringNullableFilter<"DirectMessage"> | string | null
     memberId?: StringFilter<"DirectMessage"> | string
     conversationId?: StringFilter<"DirectMessage"> | string
     createdAt?: DateTimeFilter<"DirectMessage"> | Date | string
@@ -14144,8 +15287,8 @@ export namespace Prisma {
 
   export type DirectMessageOrderByWithAggregationInput = {
     id?: SortOrder
-    content?: SortOrder
-    fileUrl?: SortOrder
+    content?: SortOrderInput | SortOrder
+    fileUrl?: SortOrderInput | SortOrder
     memberId?: SortOrder
     conversationId?: SortOrder
     createdAt?: SortOrder
@@ -14161,13 +15304,58 @@ export namespace Prisma {
     OR?: DirectMessageScalarWhereWithAggregatesInput[]
     NOT?: DirectMessageScalarWhereWithAggregatesInput | DirectMessageScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"DirectMessage"> | string
-    content?: StringWithAggregatesFilter<"DirectMessage"> | string
-    fileUrl?: StringWithAggregatesFilter<"DirectMessage"> | string
+    content?: StringNullableWithAggregatesFilter<"DirectMessage"> | string | null
+    fileUrl?: StringNullableWithAggregatesFilter<"DirectMessage"> | string | null
     memberId?: StringWithAggregatesFilter<"DirectMessage"> | string
     conversationId?: StringWithAggregatesFilter<"DirectMessage"> | string
     createdAt?: DateTimeWithAggregatesFilter<"DirectMessage"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DirectMessage"> | Date | string
     deleted?: BoolWithAggregatesFilter<"DirectMessage"> | boolean
+  }
+
+  export type AnonymousUserWhereInput = {
+    AND?: AnonymousUserWhereInput | AnonymousUserWhereInput[]
+    OR?: AnonymousUserWhereInput[]
+    NOT?: AnonymousUserWhereInput | AnonymousUserWhereInput[]
+    id?: StringFilter<"AnonymousUser"> | string
+    name?: StringFilter<"AnonymousUser"> | string
+    createdAt?: DateTimeFilter<"AnonymousUser"> | Date | string
+    AnonymousChannel?: AnonymousChannelListRelationFilter
+  }
+
+  export type AnonymousUserOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    AnonymousChannel?: AnonymousChannelOrderByRelationAggregateInput
+  }
+
+  export type AnonymousUserWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AnonymousUserWhereInput | AnonymousUserWhereInput[]
+    OR?: AnonymousUserWhereInput[]
+    NOT?: AnonymousUserWhereInput | AnonymousUserWhereInput[]
+    name?: StringFilter<"AnonymousUser"> | string
+    createdAt?: DateTimeFilter<"AnonymousUser"> | Date | string
+    AnonymousChannel?: AnonymousChannelListRelationFilter
+  }, "id">
+
+  export type AnonymousUserOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    _count?: AnonymousUserCountOrderByAggregateInput
+    _max?: AnonymousUserMaxOrderByAggregateInput
+    _min?: AnonymousUserMinOrderByAggregateInput
+  }
+
+  export type AnonymousUserScalarWhereWithAggregatesInput = {
+    AND?: AnonymousUserScalarWhereWithAggregatesInput | AnonymousUserScalarWhereWithAggregatesInput[]
+    OR?: AnonymousUserScalarWhereWithAggregatesInput[]
+    NOT?: AnonymousUserScalarWhereWithAggregatesInput | AnonymousUserScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AnonymousUser"> | string
+    name?: StringWithAggregatesFilter<"AnonymousUser"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"AnonymousUser"> | Date | string
   }
 
   export type AnonymousChannelWhereInput = {
@@ -14178,7 +15366,8 @@ export namespace Prisma {
     name?: StringFilter<"AnonymousChannel"> | string
     createdAt?: DateTimeFilter<"AnonymousChannel"> | Date | string
     updatedAt?: DateTimeFilter<"AnonymousChannel"> | Date | string
-    creator?: StringFilter<"AnonymousChannel"> | string
+    anonymousUserId?: StringFilter<"AnonymousChannel"> | string
+    creator?: XOR<AnonymousUserScalarRelationFilter, AnonymousUserWhereInput>
     messages?: AnonymousMessageListRelationFilter
   }
 
@@ -14187,7 +15376,8 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    creator?: SortOrder
+    anonymousUserId?: SortOrder
+    creator?: AnonymousUserOrderByWithRelationInput
     messages?: AnonymousMessageOrderByRelationAggregateInput
   }
 
@@ -14199,7 +15389,8 @@ export namespace Prisma {
     name?: StringFilter<"AnonymousChannel"> | string
     createdAt?: DateTimeFilter<"AnonymousChannel"> | Date | string
     updatedAt?: DateTimeFilter<"AnonymousChannel"> | Date | string
-    creator?: StringFilter<"AnonymousChannel"> | string
+    anonymousUserId?: StringFilter<"AnonymousChannel"> | string
+    creator?: XOR<AnonymousUserScalarRelationFilter, AnonymousUserWhereInput>
     messages?: AnonymousMessageListRelationFilter
   }, "id">
 
@@ -14208,7 +15399,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    creator?: SortOrder
+    anonymousUserId?: SortOrder
     _count?: AnonymousChannelCountOrderByAggregateInput
     _max?: AnonymousChannelMaxOrderByAggregateInput
     _min?: AnonymousChannelMinOrderByAggregateInput
@@ -14222,7 +15413,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"AnonymousChannel"> | string
     createdAt?: DateTimeWithAggregatesFilter<"AnonymousChannel"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AnonymousChannel"> | Date | string
-    creator?: StringWithAggregatesFilter<"AnonymousChannel"> | string
+    anonymousUserId?: StringWithAggregatesFilter<"AnonymousChannel"> | string
   }
 
   export type AnonymousMessageWhereInput = {
@@ -14398,9 +15589,9 @@ export namespace Prisma {
 
   export type UserCreateInput = {
     id?: string
-    username: string
+    username?: string | null
     name?: string | null
-    image: string
+    image?: string | null
     email: string
     emailVerified?: Date | string | null
     bannerColor?: string | null
@@ -14411,14 +15602,13 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     servers?: ServerCreateNestedManyWithoutUserInput
     members?: MemberCreateNestedManyWithoutUserInput
-    channels?: ChannelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
-    username: string
+    username?: string | null
     name?: string | null
-    image: string
+    image?: string | null
     email: string
     emailVerified?: Date | string | null
     bannerColor?: string | null
@@ -14429,14 +15619,13 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     servers?: ServerUncheckedCreateNestedManyWithoutUserInput
     members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    channels?: ChannelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14447,14 +15636,13 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     servers?: ServerUpdateManyWithoutUserNestedInput
     members?: MemberUpdateManyWithoutUserNestedInput
-    channels?: ChannelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14465,14 +15653,13 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     servers?: ServerUncheckedUpdateManyWithoutUserNestedInput
     members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    channels?: ChannelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
     id?: string
-    username: string
+    username?: string | null
     name?: string | null
-    image: string
+    image?: string | null
     email: string
     emailVerified?: Date | string | null
     bannerColor?: string | null
@@ -14484,9 +15671,9 @@ export namespace Prisma {
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14498,9 +15685,9 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14513,7 +15700,7 @@ export namespace Prisma {
   export type ServerCreateInput = {
     id?: string
     name: string
-    image: string
+    image?: string | null
     inviteCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14525,7 +15712,7 @@ export namespace Prisma {
   export type ServerUncheckedCreateInput = {
     id?: string
     name: string
-    image: string
+    image?: string | null
     inviteCode: string
     userId: string
     createdAt?: Date | string
@@ -14537,7 +15724,7 @@ export namespace Prisma {
   export type ServerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     inviteCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14549,7 +15736,7 @@ export namespace Prisma {
   export type ServerUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     inviteCode?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14561,7 +15748,7 @@ export namespace Prisma {
   export type ServerCreateManyInput = {
     id?: string
     name: string
-    image: string
+    image?: string | null
     inviteCode: string
     userId: string
     createdAt?: Date | string
@@ -14571,7 +15758,7 @@ export namespace Prisma {
   export type ServerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     inviteCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14580,7 +15767,7 @@ export namespace Prisma {
   export type ServerUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     inviteCode?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14591,7 +15778,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     server: ServerCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
@@ -14606,7 +15793,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
@@ -14645,7 +15832,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
   }
 
   export type MemberUpdateManyMutationInput = {
@@ -14670,20 +15857,20 @@ export namespace Prisma {
     type?: $Enums.ChannelType
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutChannelsInput
+    userId?: string | null
     server: ServerCreateNestedOneWithoutChannelsInput
-    Message?: MessageCreateNestedManyWithoutChannelInput
+    Messages?: MessageCreateNestedManyWithoutChannelInput
   }
 
   export type ChannelUncheckedCreateInput = {
     id?: string
     name: string
     type?: $Enums.ChannelType
-    userId: string
     serverId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Message?: MessageUncheckedCreateNestedManyWithoutChannelInput
+    userId?: string | null
+    Messages?: MessageUncheckedCreateNestedManyWithoutChannelInput
   }
 
   export type ChannelUpdateInput = {
@@ -14692,30 +15879,30 @@ export namespace Prisma {
     type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutChannelsNestedInput
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     server?: ServerUpdateOneRequiredWithoutChannelsNestedInput
-    Message?: MessageUpdateManyWithoutChannelNestedInput
+    Messages?: MessageUpdateManyWithoutChannelNestedInput
   }
 
   export type ChannelUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
-    userId?: StringFieldUpdateOperationsInput | string
     serverId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Message?: MessageUncheckedUpdateManyWithoutChannelNestedInput
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    Messages?: MessageUncheckedUpdateManyWithoutChannelNestedInput
   }
 
   export type ChannelCreateManyInput = {
     id?: string
     name: string
     type?: $Enums.ChannelType
-    userId: string
     serverId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: string | null
   }
 
   export type ChannelUpdateManyMutationInput = {
@@ -14724,16 +15911,17 @@ export namespace Prisma {
     type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChannelUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
-    userId?: StringFieldUpdateOperationsInput | string
     serverId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MessageCreateInput = {
@@ -14744,7 +15932,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     member: MemberCreateNestedOneWithoutMessagesInput
-    channel: ChannelCreateNestedOneWithoutMessageInput
+    channel: ChannelCreateNestedOneWithoutMessagesInput
   }
 
   export type MessageUncheckedCreateInput = {
@@ -14766,7 +15954,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     member?: MemberUpdateOneRequiredWithoutMessagesNestedInput
-    channel?: ChannelUpdateOneRequiredWithoutMessageNestedInput
+    channel?: ChannelUpdateOneRequiredWithoutMessagesNestedInput
   }
 
   export type MessageUncheckedUpdateInput = {
@@ -14815,28 +16003,28 @@ export namespace Prisma {
     id?: string
     memberOne: MemberCreateNestedOneWithoutConversationInitiatedInput
     memberTwo: MemberCreateNestedOneWithoutConversationRecievedInput
-    DirectMessage?: DirectMessageCreateNestedManyWithoutConversationInput
+    DirectMessages?: DirectMessageCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateInput = {
     id?: string
     memberOneId: string
     memberTwoId: string
-    DirectMessage?: DirectMessageUncheckedCreateNestedManyWithoutConversationInput
+    DirectMessages?: DirectMessageUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     memberOne?: MemberUpdateOneRequiredWithoutConversationInitiatedNestedInput
     memberTwo?: MemberUpdateOneRequiredWithoutConversationRecievedNestedInput
-    DirectMessage?: DirectMessageUpdateManyWithoutConversationNestedInput
+    DirectMessages?: DirectMessageUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     memberOneId?: StringFieldUpdateOperationsInput | string
     memberTwoId?: StringFieldUpdateOperationsInput | string
-    DirectMessage?: DirectMessageUncheckedUpdateManyWithoutConversationNestedInput
+    DirectMessages?: DirectMessageUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationCreateManyInput = {
@@ -14857,19 +16045,19 @@ export namespace Prisma {
 
   export type DirectMessageCreateInput = {
     id?: string
-    content: string
-    fileUrl: string
+    content?: string | null
+    fileUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deleted?: boolean
     member: MemberCreateNestedOneWithoutDirectMessageInput
-    conversation: ConversationCreateNestedOneWithoutDirectMessageInput
+    conversation: ConversationCreateNestedOneWithoutDirectMessagesInput
   }
 
   export type DirectMessageUncheckedCreateInput = {
     id?: string
-    content: string
-    fileUrl: string
+    content?: string | null
+    fileUrl?: string | null
     memberId: string
     conversationId: string
     createdAt?: Date | string
@@ -14879,19 +16067,19 @@ export namespace Prisma {
 
   export type DirectMessageUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deleted?: BoolFieldUpdateOperationsInput | boolean
     member?: MemberUpdateOneRequiredWithoutDirectMessageNestedInput
-    conversation?: ConversationUpdateOneRequiredWithoutDirectMessageNestedInput
+    conversation?: ConversationUpdateOneRequiredWithoutDirectMessagesNestedInput
   }
 
   export type DirectMessageUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     memberId?: StringFieldUpdateOperationsInput | string
     conversationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14901,8 +16089,8 @@ export namespace Prisma {
 
   export type DirectMessageCreateManyInput = {
     id?: string
-    content: string
-    fileUrl: string
+    content?: string | null
+    fileUrl?: string | null
     memberId: string
     conversationId: string
     createdAt?: Date | string
@@ -14912,8 +16100,8 @@ export namespace Prisma {
 
   export type DirectMessageUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deleted?: BoolFieldUpdateOperationsInput | boolean
@@ -14921,8 +16109,8 @@ export namespace Prisma {
 
   export type DirectMessageUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     memberId?: StringFieldUpdateOperationsInput | string
     conversationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14930,12 +16118,58 @@ export namespace Prisma {
     deleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type AnonymousUserCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    AnonymousChannel?: AnonymousChannelCreateNestedManyWithoutCreatorInput
+  }
+
+  export type AnonymousUserUncheckedCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    AnonymousChannel?: AnonymousChannelUncheckedCreateNestedManyWithoutCreatorInput
+  }
+
+  export type AnonymousUserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    AnonymousChannel?: AnonymousChannelUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type AnonymousUserUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    AnonymousChannel?: AnonymousChannelUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type AnonymousUserCreateManyInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+  }
+
+  export type AnonymousUserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnonymousUserUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AnonymousChannelCreateInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: string
+    creator: AnonymousUserCreateNestedOneWithoutAnonymousChannelInput
     messages?: AnonymousMessageCreateNestedManyWithoutChannelInput
   }
 
@@ -14944,7 +16178,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: string
+    anonymousUserId: string
     messages?: AnonymousMessageUncheckedCreateNestedManyWithoutChannelInput
   }
 
@@ -14953,7 +16187,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: StringFieldUpdateOperationsInput | string
+    creator?: AnonymousUserUpdateOneRequiredWithoutAnonymousChannelNestedInput
     messages?: AnonymousMessageUpdateManyWithoutChannelNestedInput
   }
 
@@ -14962,7 +16196,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: StringFieldUpdateOperationsInput | string
+    anonymousUserId?: StringFieldUpdateOperationsInput | string
     messages?: AnonymousMessageUncheckedUpdateManyWithoutChannelNestedInput
   }
 
@@ -14971,7 +16205,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: string
+    anonymousUserId: string
   }
 
   export type AnonymousChannelUpdateManyMutationInput = {
@@ -14979,7 +16213,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: StringFieldUpdateOperationsInput | string
   }
 
   export type AnonymousChannelUncheckedUpdateManyInput = {
@@ -14987,7 +16220,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: StringFieldUpdateOperationsInput | string
+    anonymousUserId?: StringFieldUpdateOperationsInput | string
   }
 
   export type AnonymousMessageCreateInput = {
@@ -15270,12 +16503,6 @@ export namespace Prisma {
     none?: MemberWhereInput
   }
 
-  export type ChannelListRelationFilter = {
-    every?: ChannelWhereInput
-    some?: ChannelWhereInput
-    none?: ChannelWhereInput
-  }
-
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -15285,10 +16512,6 @@ export namespace Prisma {
   }
 
   export type MemberOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ChannelOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -15351,6 +16574,16 @@ export namespace Prisma {
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type ChannelListRelationFilter = {
+    every?: ChannelWhereInput
+    some?: ChannelWhereInput
+    none?: ChannelWhereInput
+  }
+
+  export type ChannelOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type ServerCountOrderByAggregateInput = {
@@ -15425,6 +16658,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type MemberUserIdServerIdCompoundUniqueInput = {
+    userId: string
+    serverId: string
+  }
+
   export type MemberCountOrderByAggregateInput = {
     id?: SortOrder
     role?: SortOrder
@@ -15473,30 +16711,30 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     type?: SortOrder
-    userId?: SortOrder
     serverId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrder
   }
 
   export type ChannelMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     type?: SortOrder
-    userId?: SortOrder
     serverId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrder
   }
 
   export type ChannelMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     type?: SortOrder
-    userId?: SortOrder
     serverId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrder
   }
 
   export type EnumChannelTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -15626,6 +16864,39 @@ export namespace Prisma {
     deleted?: SortOrder
   }
 
+  export type AnonymousChannelListRelationFilter = {
+    every?: AnonymousChannelWhereInput
+    some?: AnonymousChannelWhereInput
+    none?: AnonymousChannelWhereInput
+  }
+
+  export type AnonymousChannelOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AnonymousUserCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AnonymousUserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AnonymousUserMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AnonymousUserScalarRelationFilter = {
+    is?: AnonymousUserWhereInput
+    isNot?: AnonymousUserWhereInput
+  }
+
   export type AnonymousMessageListRelationFilter = {
     every?: AnonymousMessageWhereInput
     some?: AnonymousMessageWhereInput
@@ -15641,7 +16912,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    creator?: SortOrder
+    anonymousUserId?: SortOrder
   }
 
   export type AnonymousChannelMaxOrderByAggregateInput = {
@@ -15649,7 +16920,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    creator?: SortOrder
+    anonymousUserId?: SortOrder
   }
 
   export type AnonymousChannelMinOrderByAggregateInput = {
@@ -15657,7 +16928,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    creator?: SortOrder
+    anonymousUserId?: SortOrder
   }
 
   export type AnonymousChannelScalarRelationFilter = {
@@ -15749,13 +17020,6 @@ export namespace Prisma {
     connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
   }
 
-  export type ChannelCreateNestedManyWithoutUserInput = {
-    create?: XOR<ChannelCreateWithoutUserInput, ChannelUncheckedCreateWithoutUserInput> | ChannelCreateWithoutUserInput[] | ChannelUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ChannelCreateOrConnectWithoutUserInput | ChannelCreateOrConnectWithoutUserInput[]
-    createMany?: ChannelCreateManyUserInputEnvelope
-    connect?: ChannelWhereUniqueInput | ChannelWhereUniqueInput[]
-  }
-
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -15775,13 +17039,6 @@ export namespace Prisma {
     connectOrCreate?: MemberCreateOrConnectWithoutUserInput | MemberCreateOrConnectWithoutUserInput[]
     createMany?: MemberCreateManyUserInputEnvelope
     connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
-  }
-
-  export type ChannelUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ChannelCreateWithoutUserInput, ChannelUncheckedCreateWithoutUserInput> | ChannelCreateWithoutUserInput[] | ChannelUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ChannelCreateOrConnectWithoutUserInput | ChannelCreateOrConnectWithoutUserInput[]
-    createMany?: ChannelCreateManyUserInputEnvelope
-    connect?: ChannelWhereUniqueInput | ChannelWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -15830,20 +17087,6 @@ export namespace Prisma {
     deleteMany?: MemberScalarWhereInput | MemberScalarWhereInput[]
   }
 
-  export type ChannelUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ChannelCreateWithoutUserInput, ChannelUncheckedCreateWithoutUserInput> | ChannelCreateWithoutUserInput[] | ChannelUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ChannelCreateOrConnectWithoutUserInput | ChannelCreateOrConnectWithoutUserInput[]
-    upsert?: ChannelUpsertWithWhereUniqueWithoutUserInput | ChannelUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ChannelCreateManyUserInputEnvelope
-    set?: ChannelWhereUniqueInput | ChannelWhereUniqueInput[]
-    disconnect?: ChannelWhereUniqueInput | ChannelWhereUniqueInput[]
-    delete?: ChannelWhereUniqueInput | ChannelWhereUniqueInput[]
-    connect?: ChannelWhereUniqueInput | ChannelWhereUniqueInput[]
-    update?: ChannelUpdateWithWhereUniqueWithoutUserInput | ChannelUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ChannelUpdateManyWithWhereWithoutUserInput | ChannelUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ChannelScalarWhereInput | ChannelScalarWhereInput[]
-  }
-
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -15884,20 +17127,6 @@ export namespace Prisma {
     update?: MemberUpdateWithWhereUniqueWithoutUserInput | MemberUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: MemberUpdateManyWithWhereWithoutUserInput | MemberUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: MemberScalarWhereInput | MemberScalarWhereInput[]
-  }
-
-  export type ChannelUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ChannelCreateWithoutUserInput, ChannelUncheckedCreateWithoutUserInput> | ChannelCreateWithoutUserInput[] | ChannelUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ChannelCreateOrConnectWithoutUserInput | ChannelCreateOrConnectWithoutUserInput[]
-    upsert?: ChannelUpsertWithWhereUniqueWithoutUserInput | ChannelUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ChannelCreateManyUserInputEnvelope
-    set?: ChannelWhereUniqueInput | ChannelWhereUniqueInput[]
-    disconnect?: ChannelWhereUniqueInput | ChannelWhereUniqueInput[]
-    delete?: ChannelWhereUniqueInput | ChannelWhereUniqueInput[]
-    connect?: ChannelWhereUniqueInput | ChannelWhereUniqueInput[]
-    update?: ChannelUpdateWithWhereUniqueWithoutUserInput | ChannelUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ChannelUpdateManyWithWhereWithoutUserInput | ChannelUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ChannelScalarWhereInput | ChannelScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutServersInput = {
@@ -16198,12 +17427,6 @@ export namespace Prisma {
     deleteMany?: DirectMessageScalarWhereInput | DirectMessageScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutChannelsInput = {
-    create?: XOR<UserCreateWithoutChannelsInput, UserUncheckedCreateWithoutChannelsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutChannelsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type ServerCreateNestedOneWithoutChannelsInput = {
     create?: XOR<ServerCreateWithoutChannelsInput, ServerUncheckedCreateWithoutChannelsInput>
     connectOrCreate?: ServerCreateOrConnectWithoutChannelsInput
@@ -16226,14 +17449,6 @@ export namespace Prisma {
 
   export type EnumChannelTypeFieldUpdateOperationsInput = {
     set?: $Enums.ChannelType
-  }
-
-  export type UserUpdateOneRequiredWithoutChannelsNestedInput = {
-    create?: XOR<UserCreateWithoutChannelsInput, UserUncheckedCreateWithoutChannelsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutChannelsInput
-    upsert?: UserUpsertWithoutChannelsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutChannelsInput, UserUpdateWithoutChannelsInput>, UserUncheckedUpdateWithoutChannelsInput>
   }
 
   export type ServerUpdateOneRequiredWithoutChannelsNestedInput = {
@@ -16278,9 +17493,9 @@ export namespace Prisma {
     connect?: MemberWhereUniqueInput
   }
 
-  export type ChannelCreateNestedOneWithoutMessageInput = {
-    create?: XOR<ChannelCreateWithoutMessageInput, ChannelUncheckedCreateWithoutMessageInput>
-    connectOrCreate?: ChannelCreateOrConnectWithoutMessageInput
+  export type ChannelCreateNestedOneWithoutMessagesInput = {
+    create?: XOR<ChannelCreateWithoutMessagesInput, ChannelUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: ChannelCreateOrConnectWithoutMessagesInput
     connect?: ChannelWhereUniqueInput
   }
 
@@ -16296,12 +17511,12 @@ export namespace Prisma {
     update?: XOR<XOR<MemberUpdateToOneWithWhereWithoutMessagesInput, MemberUpdateWithoutMessagesInput>, MemberUncheckedUpdateWithoutMessagesInput>
   }
 
-  export type ChannelUpdateOneRequiredWithoutMessageNestedInput = {
-    create?: XOR<ChannelCreateWithoutMessageInput, ChannelUncheckedCreateWithoutMessageInput>
-    connectOrCreate?: ChannelCreateOrConnectWithoutMessageInput
-    upsert?: ChannelUpsertWithoutMessageInput
+  export type ChannelUpdateOneRequiredWithoutMessagesNestedInput = {
+    create?: XOR<ChannelCreateWithoutMessagesInput, ChannelUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: ChannelCreateOrConnectWithoutMessagesInput
+    upsert?: ChannelUpsertWithoutMessagesInput
     connect?: ChannelWhereUniqueInput
-    update?: XOR<XOR<ChannelUpdateToOneWithWhereWithoutMessageInput, ChannelUpdateWithoutMessageInput>, ChannelUncheckedUpdateWithoutMessageInput>
+    update?: XOR<XOR<ChannelUpdateToOneWithWhereWithoutMessagesInput, ChannelUpdateWithoutMessagesInput>, ChannelUncheckedUpdateWithoutMessagesInput>
   }
 
   export type MemberCreateNestedOneWithoutConversationInitiatedInput = {
@@ -16380,9 +17595,9 @@ export namespace Prisma {
     connect?: MemberWhereUniqueInput
   }
 
-  export type ConversationCreateNestedOneWithoutDirectMessageInput = {
-    create?: XOR<ConversationCreateWithoutDirectMessageInput, ConversationUncheckedCreateWithoutDirectMessageInput>
-    connectOrCreate?: ConversationCreateOrConnectWithoutDirectMessageInput
+  export type ConversationCreateNestedOneWithoutDirectMessagesInput = {
+    create?: XOR<ConversationCreateWithoutDirectMessagesInput, ConversationUncheckedCreateWithoutDirectMessagesInput>
+    connectOrCreate?: ConversationCreateOrConnectWithoutDirectMessagesInput
     connect?: ConversationWhereUniqueInput
   }
 
@@ -16394,12 +17609,60 @@ export namespace Prisma {
     update?: XOR<XOR<MemberUpdateToOneWithWhereWithoutDirectMessageInput, MemberUpdateWithoutDirectMessageInput>, MemberUncheckedUpdateWithoutDirectMessageInput>
   }
 
-  export type ConversationUpdateOneRequiredWithoutDirectMessageNestedInput = {
-    create?: XOR<ConversationCreateWithoutDirectMessageInput, ConversationUncheckedCreateWithoutDirectMessageInput>
-    connectOrCreate?: ConversationCreateOrConnectWithoutDirectMessageInput
-    upsert?: ConversationUpsertWithoutDirectMessageInput
+  export type ConversationUpdateOneRequiredWithoutDirectMessagesNestedInput = {
+    create?: XOR<ConversationCreateWithoutDirectMessagesInput, ConversationUncheckedCreateWithoutDirectMessagesInput>
+    connectOrCreate?: ConversationCreateOrConnectWithoutDirectMessagesInput
+    upsert?: ConversationUpsertWithoutDirectMessagesInput
     connect?: ConversationWhereUniqueInput
-    update?: XOR<XOR<ConversationUpdateToOneWithWhereWithoutDirectMessageInput, ConversationUpdateWithoutDirectMessageInput>, ConversationUncheckedUpdateWithoutDirectMessageInput>
+    update?: XOR<XOR<ConversationUpdateToOneWithWhereWithoutDirectMessagesInput, ConversationUpdateWithoutDirectMessagesInput>, ConversationUncheckedUpdateWithoutDirectMessagesInput>
+  }
+
+  export type AnonymousChannelCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<AnonymousChannelCreateWithoutCreatorInput, AnonymousChannelUncheckedCreateWithoutCreatorInput> | AnonymousChannelCreateWithoutCreatorInput[] | AnonymousChannelUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: AnonymousChannelCreateOrConnectWithoutCreatorInput | AnonymousChannelCreateOrConnectWithoutCreatorInput[]
+    createMany?: AnonymousChannelCreateManyCreatorInputEnvelope
+    connect?: AnonymousChannelWhereUniqueInput | AnonymousChannelWhereUniqueInput[]
+  }
+
+  export type AnonymousChannelUncheckedCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<AnonymousChannelCreateWithoutCreatorInput, AnonymousChannelUncheckedCreateWithoutCreatorInput> | AnonymousChannelCreateWithoutCreatorInput[] | AnonymousChannelUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: AnonymousChannelCreateOrConnectWithoutCreatorInput | AnonymousChannelCreateOrConnectWithoutCreatorInput[]
+    createMany?: AnonymousChannelCreateManyCreatorInputEnvelope
+    connect?: AnonymousChannelWhereUniqueInput | AnonymousChannelWhereUniqueInput[]
+  }
+
+  export type AnonymousChannelUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<AnonymousChannelCreateWithoutCreatorInput, AnonymousChannelUncheckedCreateWithoutCreatorInput> | AnonymousChannelCreateWithoutCreatorInput[] | AnonymousChannelUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: AnonymousChannelCreateOrConnectWithoutCreatorInput | AnonymousChannelCreateOrConnectWithoutCreatorInput[]
+    upsert?: AnonymousChannelUpsertWithWhereUniqueWithoutCreatorInput | AnonymousChannelUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: AnonymousChannelCreateManyCreatorInputEnvelope
+    set?: AnonymousChannelWhereUniqueInput | AnonymousChannelWhereUniqueInput[]
+    disconnect?: AnonymousChannelWhereUniqueInput | AnonymousChannelWhereUniqueInput[]
+    delete?: AnonymousChannelWhereUniqueInput | AnonymousChannelWhereUniqueInput[]
+    connect?: AnonymousChannelWhereUniqueInput | AnonymousChannelWhereUniqueInput[]
+    update?: AnonymousChannelUpdateWithWhereUniqueWithoutCreatorInput | AnonymousChannelUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: AnonymousChannelUpdateManyWithWhereWithoutCreatorInput | AnonymousChannelUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: AnonymousChannelScalarWhereInput | AnonymousChannelScalarWhereInput[]
+  }
+
+  export type AnonymousChannelUncheckedUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<AnonymousChannelCreateWithoutCreatorInput, AnonymousChannelUncheckedCreateWithoutCreatorInput> | AnonymousChannelCreateWithoutCreatorInput[] | AnonymousChannelUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: AnonymousChannelCreateOrConnectWithoutCreatorInput | AnonymousChannelCreateOrConnectWithoutCreatorInput[]
+    upsert?: AnonymousChannelUpsertWithWhereUniqueWithoutCreatorInput | AnonymousChannelUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: AnonymousChannelCreateManyCreatorInputEnvelope
+    set?: AnonymousChannelWhereUniqueInput | AnonymousChannelWhereUniqueInput[]
+    disconnect?: AnonymousChannelWhereUniqueInput | AnonymousChannelWhereUniqueInput[]
+    delete?: AnonymousChannelWhereUniqueInput | AnonymousChannelWhereUniqueInput[]
+    connect?: AnonymousChannelWhereUniqueInput | AnonymousChannelWhereUniqueInput[]
+    update?: AnonymousChannelUpdateWithWhereUniqueWithoutCreatorInput | AnonymousChannelUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: AnonymousChannelUpdateManyWithWhereWithoutCreatorInput | AnonymousChannelUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: AnonymousChannelScalarWhereInput | AnonymousChannelScalarWhereInput[]
+  }
+
+  export type AnonymousUserCreateNestedOneWithoutAnonymousChannelInput = {
+    create?: XOR<AnonymousUserCreateWithoutAnonymousChannelInput, AnonymousUserUncheckedCreateWithoutAnonymousChannelInput>
+    connectOrCreate?: AnonymousUserCreateOrConnectWithoutAnonymousChannelInput
+    connect?: AnonymousUserWhereUniqueInput
   }
 
   export type AnonymousMessageCreateNestedManyWithoutChannelInput = {
@@ -16414,6 +17677,14 @@ export namespace Prisma {
     connectOrCreate?: AnonymousMessageCreateOrConnectWithoutChannelInput | AnonymousMessageCreateOrConnectWithoutChannelInput[]
     createMany?: AnonymousMessageCreateManyChannelInputEnvelope
     connect?: AnonymousMessageWhereUniqueInput | AnonymousMessageWhereUniqueInput[]
+  }
+
+  export type AnonymousUserUpdateOneRequiredWithoutAnonymousChannelNestedInput = {
+    create?: XOR<AnonymousUserCreateWithoutAnonymousChannelInput, AnonymousUserUncheckedCreateWithoutAnonymousChannelInput>
+    connectOrCreate?: AnonymousUserCreateOrConnectWithoutAnonymousChannelInput
+    upsert?: AnonymousUserUpsertWithoutAnonymousChannelInput
+    connect?: AnonymousUserWhereUniqueInput
+    update?: XOR<XOR<AnonymousUserUpdateToOneWithWhereWithoutAnonymousChannelInput, AnonymousUserUpdateWithoutAnonymousChannelInput>, AnonymousUserUncheckedUpdateWithoutAnonymousChannelInput>
   }
 
   export type AnonymousMessageUpdateManyWithoutChannelNestedInput = {
@@ -16668,9 +17939,9 @@ export namespace Prisma {
 
   export type UserCreateWithoutAccountsInput = {
     id?: string
-    username: string
+    username?: string | null
     name?: string | null
-    image: string
+    image?: string | null
     email: string
     emailVerified?: Date | string | null
     bannerColor?: string | null
@@ -16680,14 +17951,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     servers?: ServerCreateNestedManyWithoutUserInput
     members?: MemberCreateNestedManyWithoutUserInput
-    channels?: ChannelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
     id?: string
-    username: string
+    username?: string | null
     name?: string | null
-    image: string
+    image?: string | null
     email: string
     emailVerified?: Date | string | null
     bannerColor?: string | null
@@ -16697,7 +17967,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     servers?: ServerUncheckedCreateNestedManyWithoutUserInput
     members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    channels?: ChannelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -16718,9 +17987,9 @@ export namespace Prisma {
 
   export type UserUpdateWithoutAccountsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16730,14 +17999,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     servers?: ServerUpdateManyWithoutUserNestedInput
     members?: MemberUpdateManyWithoutUserNestedInput
-    channels?: ChannelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16747,7 +18015,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     servers?: ServerUncheckedUpdateManyWithoutUserNestedInput
     members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    channels?: ChannelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -16793,7 +18060,7 @@ export namespace Prisma {
   export type ServerCreateWithoutUserInput = {
     id?: string
     name: string
-    image: string
+    image?: string | null
     inviteCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16804,7 +18071,7 @@ export namespace Prisma {
   export type ServerUncheckedCreateWithoutUserInput = {
     id?: string
     name: string
-    image: string
+    image?: string | null
     inviteCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16826,7 +18093,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     server: ServerCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationCreateNestedManyWithoutMemberOneInput
@@ -16839,7 +18106,7 @@ export namespace Prisma {
     role?: $Enums.MemberRole
     serverId: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
@@ -16853,36 +18120,6 @@ export namespace Prisma {
 
   export type MemberCreateManyUserInputEnvelope = {
     data: MemberCreateManyUserInput | MemberCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ChannelCreateWithoutUserInput = {
-    id?: string
-    name: string
-    type?: $Enums.ChannelType
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    server: ServerCreateNestedOneWithoutChannelsInput
-    Message?: MessageCreateNestedManyWithoutChannelInput
-  }
-
-  export type ChannelUncheckedCreateWithoutUserInput = {
-    id?: string
-    name: string
-    type?: $Enums.ChannelType
-    serverId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    Message?: MessageUncheckedCreateNestedManyWithoutChannelInput
-  }
-
-  export type ChannelCreateOrConnectWithoutUserInput = {
-    where: ChannelWhereUniqueInput
-    create: XOR<ChannelCreateWithoutUserInput, ChannelUncheckedCreateWithoutUserInput>
-  }
-
-  export type ChannelCreateManyUserInputEnvelope = {
-    data: ChannelCreateManyUserInput | ChannelCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -16943,7 +18180,7 @@ export namespace Prisma {
     NOT?: ServerScalarWhereInput | ServerScalarWhereInput[]
     id?: StringFilter<"Server"> | string
     name?: StringFilter<"Server"> | string
-    image?: StringFilter<"Server"> | string
+    image?: StringNullableFilter<"Server"> | string | null
     inviteCode?: StringFilter<"Server"> | string
     userId?: StringFilter<"Server"> | string
     createdAt?: DateTimeFilter<"Server"> | Date | string
@@ -16978,40 +18215,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Member"> | Date | string
   }
 
-  export type ChannelUpsertWithWhereUniqueWithoutUserInput = {
-    where: ChannelWhereUniqueInput
-    update: XOR<ChannelUpdateWithoutUserInput, ChannelUncheckedUpdateWithoutUserInput>
-    create: XOR<ChannelCreateWithoutUserInput, ChannelUncheckedCreateWithoutUserInput>
-  }
-
-  export type ChannelUpdateWithWhereUniqueWithoutUserInput = {
-    where: ChannelWhereUniqueInput
-    data: XOR<ChannelUpdateWithoutUserInput, ChannelUncheckedUpdateWithoutUserInput>
-  }
-
-  export type ChannelUpdateManyWithWhereWithoutUserInput = {
-    where: ChannelScalarWhereInput
-    data: XOR<ChannelUpdateManyMutationInput, ChannelUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type ChannelScalarWhereInput = {
-    AND?: ChannelScalarWhereInput | ChannelScalarWhereInput[]
-    OR?: ChannelScalarWhereInput[]
-    NOT?: ChannelScalarWhereInput | ChannelScalarWhereInput[]
-    id?: StringFilter<"Channel"> | string
-    name?: StringFilter<"Channel"> | string
-    type?: EnumChannelTypeFilter<"Channel"> | $Enums.ChannelType
-    userId?: StringFilter<"Channel"> | string
-    serverId?: StringFilter<"Channel"> | string
-    createdAt?: DateTimeFilter<"Channel"> | Date | string
-    updatedAt?: DateTimeFilter<"Channel"> | Date | string
-  }
-
   export type UserCreateWithoutServersInput = {
     id?: string
-    username: string
+    username?: string | null
     name?: string | null
-    image: string
+    image?: string | null
     email: string
     emailVerified?: Date | string | null
     bannerColor?: string | null
@@ -17021,14 +18229,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     members?: MemberCreateNestedManyWithoutUserInput
-    channels?: ChannelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutServersInput = {
     id?: string
-    username: string
+    username?: string | null
     name?: string | null
-    image: string
+    image?: string | null
     email: string
     emailVerified?: Date | string | null
     bannerColor?: string | null
@@ -17038,7 +18245,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     members?: MemberUncheckedCreateNestedManyWithoutUserInput
-    channels?: ChannelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutServersInput = {
@@ -17050,7 +18256,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationCreateNestedManyWithoutMemberOneInput
@@ -17063,7 +18269,7 @@ export namespace Prisma {
     role?: $Enums.MemberRole
     userId: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
@@ -17086,18 +18292,18 @@ export namespace Prisma {
     type?: $Enums.ChannelType
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutChannelsInput
-    Message?: MessageCreateNestedManyWithoutChannelInput
+    userId?: string | null
+    Messages?: MessageCreateNestedManyWithoutChannelInput
   }
 
   export type ChannelUncheckedCreateWithoutServerInput = {
     id?: string
     name: string
     type?: $Enums.ChannelType
-    userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Message?: MessageUncheckedCreateNestedManyWithoutChannelInput
+    userId?: string | null
+    Messages?: MessageUncheckedCreateNestedManyWithoutChannelInput
   }
 
   export type ChannelCreateOrConnectWithoutServerInput = {
@@ -17123,9 +18329,9 @@ export namespace Prisma {
 
   export type UserUpdateWithoutServersInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17135,14 +18341,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     members?: MemberUpdateManyWithoutUserNestedInput
-    channels?: ChannelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutServersInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17152,7 +18357,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-    channels?: ChannelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MemberUpsertWithWhereUniqueWithoutServerInput = {
@@ -17187,11 +18391,24 @@ export namespace Prisma {
     data: XOR<ChannelUpdateManyMutationInput, ChannelUncheckedUpdateManyWithoutServerInput>
   }
 
+  export type ChannelScalarWhereInput = {
+    AND?: ChannelScalarWhereInput | ChannelScalarWhereInput[]
+    OR?: ChannelScalarWhereInput[]
+    NOT?: ChannelScalarWhereInput | ChannelScalarWhereInput[]
+    id?: StringFilter<"Channel"> | string
+    name?: StringFilter<"Channel"> | string
+    type?: EnumChannelTypeFilter<"Channel"> | $Enums.ChannelType
+    serverId?: StringFilter<"Channel"> | string
+    createdAt?: DateTimeFilter<"Channel"> | Date | string
+    updatedAt?: DateTimeFilter<"Channel"> | Date | string
+    userId?: StringNullableFilter<"Channel"> | string | null
+  }
+
   export type UserCreateWithoutMembersInput = {
     id?: string
-    username: string
+    username?: string | null
     name?: string | null
-    image: string
+    image?: string | null
     email: string
     emailVerified?: Date | string | null
     bannerColor?: string | null
@@ -17201,14 +18418,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     servers?: ServerCreateNestedManyWithoutUserInput
-    channels?: ChannelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMembersInput = {
     id?: string
-    username: string
+    username?: string | null
     name?: string | null
-    image: string
+    image?: string | null
     email: string
     emailVerified?: Date | string | null
     bannerColor?: string | null
@@ -17218,7 +18434,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     servers?: ServerUncheckedCreateNestedManyWithoutUserInput
-    channels?: ChannelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMembersInput = {
@@ -17229,7 +18444,7 @@ export namespace Prisma {
   export type ServerCreateWithoutMembersInput = {
     id?: string
     name: string
-    image: string
+    image?: string | null
     inviteCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17240,7 +18455,7 @@ export namespace Prisma {
   export type ServerUncheckedCreateWithoutMembersInput = {
     id?: string
     name: string
-    image: string
+    image?: string | null
     inviteCode: string
     userId: string
     createdAt?: Date | string
@@ -17260,7 +18475,7 @@ export namespace Prisma {
     deleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    channel: ChannelCreateNestedOneWithoutMessageInput
+    channel: ChannelCreateNestedOneWithoutMessagesInput
   }
 
   export type MessageUncheckedCreateWithoutMemberInput = {
@@ -17286,13 +18501,13 @@ export namespace Prisma {
   export type ConversationCreateWithoutMemberOneInput = {
     id?: string
     memberTwo: MemberCreateNestedOneWithoutConversationRecievedInput
-    DirectMessage?: DirectMessageCreateNestedManyWithoutConversationInput
+    DirectMessages?: DirectMessageCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutMemberOneInput = {
     id?: string
     memberTwoId: string
-    DirectMessage?: DirectMessageUncheckedCreateNestedManyWithoutConversationInput
+    DirectMessages?: DirectMessageUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutMemberOneInput = {
@@ -17308,13 +18523,13 @@ export namespace Prisma {
   export type ConversationCreateWithoutMemberTwoInput = {
     id?: string
     memberOne: MemberCreateNestedOneWithoutConversationInitiatedInput
-    DirectMessage?: DirectMessageCreateNestedManyWithoutConversationInput
+    DirectMessages?: DirectMessageCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutMemberTwoInput = {
     id?: string
     memberOneId: string
-    DirectMessage?: DirectMessageUncheckedCreateNestedManyWithoutConversationInput
+    DirectMessages?: DirectMessageUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutMemberTwoInput = {
@@ -17329,18 +18544,18 @@ export namespace Prisma {
 
   export type DirectMessageCreateWithoutMemberInput = {
     id?: string
-    content: string
-    fileUrl: string
+    content?: string | null
+    fileUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deleted?: boolean
-    conversation: ConversationCreateNestedOneWithoutDirectMessageInput
+    conversation: ConversationCreateNestedOneWithoutDirectMessagesInput
   }
 
   export type DirectMessageUncheckedCreateWithoutMemberInput = {
     id?: string
-    content: string
-    fileUrl: string
+    content?: string | null
+    fileUrl?: string | null
     conversationId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17370,9 +18585,9 @@ export namespace Prisma {
 
   export type UserUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17382,14 +18597,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     servers?: ServerUpdateManyWithoutUserNestedInput
-    channels?: ChannelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17399,7 +18613,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     servers?: ServerUncheckedUpdateManyWithoutUserNestedInput
-    channels?: ChannelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ServerUpsertWithoutMembersInput = {
@@ -17416,7 +18629,7 @@ export namespace Prisma {
   export type ServerUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     inviteCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17427,7 +18640,7 @@ export namespace Prisma {
   export type ServerUncheckedUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     inviteCode?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17527,8 +18740,8 @@ export namespace Prisma {
     OR?: DirectMessageScalarWhereInput[]
     NOT?: DirectMessageScalarWhereInput | DirectMessageScalarWhereInput[]
     id?: StringFilter<"DirectMessage"> | string
-    content?: StringFilter<"DirectMessage"> | string
-    fileUrl?: StringFilter<"DirectMessage"> | string
+    content?: StringNullableFilter<"DirectMessage"> | string | null
+    fileUrl?: StringNullableFilter<"DirectMessage"> | string | null
     memberId?: StringFilter<"DirectMessage"> | string
     conversationId?: StringFilter<"DirectMessage"> | string
     createdAt?: DateTimeFilter<"DirectMessage"> | Date | string
@@ -17536,49 +18749,10 @@ export namespace Prisma {
     deleted?: BoolFilter<"DirectMessage"> | boolean
   }
 
-  export type UserCreateWithoutChannelsInput = {
-    id?: string
-    username: string
-    name?: string | null
-    image: string
-    email: string
-    emailVerified?: Date | string | null
-    bannerColor?: string | null
-    bannerImage?: string | null
-    bio?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    servers?: ServerCreateNestedManyWithoutUserInput
-    members?: MemberCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutChannelsInput = {
-    id?: string
-    username: string
-    name?: string | null
-    image: string
-    email: string
-    emailVerified?: Date | string | null
-    bannerColor?: string | null
-    bannerImage?: string | null
-    bio?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    servers?: ServerUncheckedCreateNestedManyWithoutUserInput
-    members?: MemberUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutChannelsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutChannelsInput, UserUncheckedCreateWithoutChannelsInput>
-  }
-
   export type ServerCreateWithoutChannelsInput = {
     id?: string
     name: string
-    image: string
+    image?: string | null
     inviteCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17589,7 +18763,7 @@ export namespace Prisma {
   export type ServerUncheckedCreateWithoutChannelsInput = {
     id?: string
     name: string
-    image: string
+    image?: string | null
     inviteCode: string
     userId: string
     createdAt?: Date | string
@@ -17632,51 +18806,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutChannelsInput = {
-    update: XOR<UserUpdateWithoutChannelsInput, UserUncheckedUpdateWithoutChannelsInput>
-    create: XOR<UserCreateWithoutChannelsInput, UserUncheckedCreateWithoutChannelsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutChannelsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutChannelsInput, UserUncheckedUpdateWithoutChannelsInput>
-  }
-
-  export type UserUpdateWithoutChannelsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
-    bannerImage?: NullableStringFieldUpdateOperationsInput | string | null
-    bio?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    servers?: ServerUpdateManyWithoutUserNestedInput
-    members?: MemberUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutChannelsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bannerColor?: NullableStringFieldUpdateOperationsInput | string | null
-    bannerImage?: NullableStringFieldUpdateOperationsInput | string | null
-    bio?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    servers?: ServerUncheckedUpdateManyWithoutUserNestedInput
-    members?: MemberUncheckedUpdateManyWithoutUserNestedInput
-  }
-
   export type ServerUpsertWithoutChannelsInput = {
     update: XOR<ServerUpdateWithoutChannelsInput, ServerUncheckedUpdateWithoutChannelsInput>
     create: XOR<ServerCreateWithoutChannelsInput, ServerUncheckedCreateWithoutChannelsInput>
@@ -17691,7 +18820,7 @@ export namespace Prisma {
   export type ServerUpdateWithoutChannelsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     inviteCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17702,7 +18831,7 @@ export namespace Prisma {
   export type ServerUncheckedUpdateWithoutChannelsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     inviteCode?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17730,7 +18859,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     server: ServerCreateNestedOneWithoutMembersInput
     ConversationInitiated?: ConversationCreateNestedManyWithoutMemberOneInput
@@ -17744,7 +18873,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
     DirectMessage?: DirectMessageUncheckedCreateNestedManyWithoutMemberInput
@@ -17755,29 +18884,29 @@ export namespace Prisma {
     create: XOR<MemberCreateWithoutMessagesInput, MemberUncheckedCreateWithoutMessagesInput>
   }
 
-  export type ChannelCreateWithoutMessageInput = {
+  export type ChannelCreateWithoutMessagesInput = {
     id?: string
     name: string
     type?: $Enums.ChannelType
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutChannelsInput
+    userId?: string | null
     server: ServerCreateNestedOneWithoutChannelsInput
   }
 
-  export type ChannelUncheckedCreateWithoutMessageInput = {
+  export type ChannelUncheckedCreateWithoutMessagesInput = {
     id?: string
     name: string
     type?: $Enums.ChannelType
-    userId: string
     serverId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: string | null
   }
 
-  export type ChannelCreateOrConnectWithoutMessageInput = {
+  export type ChannelCreateOrConnectWithoutMessagesInput = {
     where: ChannelWhereUniqueInput
-    create: XOR<ChannelCreateWithoutMessageInput, ChannelUncheckedCreateWithoutMessageInput>
+    create: XOR<ChannelCreateWithoutMessagesInput, ChannelUncheckedCreateWithoutMessagesInput>
   }
 
   export type MemberUpsertWithoutMessagesInput = {
@@ -17815,42 +18944,42 @@ export namespace Prisma {
     DirectMessage?: DirectMessageUncheckedUpdateManyWithoutMemberNestedInput
   }
 
-  export type ChannelUpsertWithoutMessageInput = {
-    update: XOR<ChannelUpdateWithoutMessageInput, ChannelUncheckedUpdateWithoutMessageInput>
-    create: XOR<ChannelCreateWithoutMessageInput, ChannelUncheckedCreateWithoutMessageInput>
+  export type ChannelUpsertWithoutMessagesInput = {
+    update: XOR<ChannelUpdateWithoutMessagesInput, ChannelUncheckedUpdateWithoutMessagesInput>
+    create: XOR<ChannelCreateWithoutMessagesInput, ChannelUncheckedCreateWithoutMessagesInput>
     where?: ChannelWhereInput
   }
 
-  export type ChannelUpdateToOneWithWhereWithoutMessageInput = {
+  export type ChannelUpdateToOneWithWhereWithoutMessagesInput = {
     where?: ChannelWhereInput
-    data: XOR<ChannelUpdateWithoutMessageInput, ChannelUncheckedUpdateWithoutMessageInput>
+    data: XOR<ChannelUpdateWithoutMessagesInput, ChannelUncheckedUpdateWithoutMessagesInput>
   }
 
-  export type ChannelUpdateWithoutMessageInput = {
+  export type ChannelUpdateWithoutMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutChannelsNestedInput
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     server?: ServerUpdateOneRequiredWithoutChannelsNestedInput
   }
 
-  export type ChannelUncheckedUpdateWithoutMessageInput = {
+  export type ChannelUncheckedUpdateWithoutMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
-    userId?: StringFieldUpdateOperationsInput | string
     serverId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MemberCreateWithoutConversationInitiatedInput = {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     server: ServerCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
@@ -17864,7 +18993,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
     DirectMessage?: DirectMessageUncheckedCreateNestedManyWithoutMemberInput
@@ -17879,7 +19008,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     server: ServerCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
@@ -17893,7 +19022,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     DirectMessage?: DirectMessageUncheckedCreateNestedManyWithoutMemberInput
@@ -17906,8 +19035,8 @@ export namespace Prisma {
 
   export type DirectMessageCreateWithoutConversationInput = {
     id?: string
-    content: string
-    fileUrl: string
+    content?: string | null
+    fileUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deleted?: boolean
@@ -17916,8 +19045,8 @@ export namespace Prisma {
 
   export type DirectMessageUncheckedCreateWithoutConversationInput = {
     id?: string
-    content: string
-    fileUrl: string
+    content?: string | null
+    fileUrl?: string | null
     memberId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18024,7 +19153,7 @@ export namespace Prisma {
     id?: string
     role?: $Enums.MemberRole
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     user: UserCreateNestedOneWithoutMembersInput
     server: ServerCreateNestedOneWithoutMembersInput
     Messages?: MessageCreateNestedManyWithoutMemberInput
@@ -18038,7 +19167,7 @@ export namespace Prisma {
     userId: string
     serverId: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
     Messages?: MessageUncheckedCreateNestedManyWithoutMemberInput
     ConversationInitiated?: ConversationUncheckedCreateNestedManyWithoutMemberOneInput
     ConversationRecieved?: ConversationUncheckedCreateNestedManyWithoutMemberTwoInput
@@ -18049,21 +19178,21 @@ export namespace Prisma {
     create: XOR<MemberCreateWithoutDirectMessageInput, MemberUncheckedCreateWithoutDirectMessageInput>
   }
 
-  export type ConversationCreateWithoutDirectMessageInput = {
+  export type ConversationCreateWithoutDirectMessagesInput = {
     id?: string
     memberOne: MemberCreateNestedOneWithoutConversationInitiatedInput
     memberTwo: MemberCreateNestedOneWithoutConversationRecievedInput
   }
 
-  export type ConversationUncheckedCreateWithoutDirectMessageInput = {
+  export type ConversationUncheckedCreateWithoutDirectMessagesInput = {
     id?: string
     memberOneId: string
     memberTwoId: string
   }
 
-  export type ConversationCreateOrConnectWithoutDirectMessageInput = {
+  export type ConversationCreateOrConnectWithoutDirectMessagesInput = {
     where: ConversationWhereUniqueInput
-    create: XOR<ConversationCreateWithoutDirectMessageInput, ConversationUncheckedCreateWithoutDirectMessageInput>
+    create: XOR<ConversationCreateWithoutDirectMessagesInput, ConversationUncheckedCreateWithoutDirectMessagesInput>
   }
 
   export type MemberUpsertWithoutDirectMessageInput = {
@@ -18101,27 +19230,97 @@ export namespace Prisma {
     ConversationRecieved?: ConversationUncheckedUpdateManyWithoutMemberTwoNestedInput
   }
 
-  export type ConversationUpsertWithoutDirectMessageInput = {
-    update: XOR<ConversationUpdateWithoutDirectMessageInput, ConversationUncheckedUpdateWithoutDirectMessageInput>
-    create: XOR<ConversationCreateWithoutDirectMessageInput, ConversationUncheckedCreateWithoutDirectMessageInput>
+  export type ConversationUpsertWithoutDirectMessagesInput = {
+    update: XOR<ConversationUpdateWithoutDirectMessagesInput, ConversationUncheckedUpdateWithoutDirectMessagesInput>
+    create: XOR<ConversationCreateWithoutDirectMessagesInput, ConversationUncheckedCreateWithoutDirectMessagesInput>
     where?: ConversationWhereInput
   }
 
-  export type ConversationUpdateToOneWithWhereWithoutDirectMessageInput = {
+  export type ConversationUpdateToOneWithWhereWithoutDirectMessagesInput = {
     where?: ConversationWhereInput
-    data: XOR<ConversationUpdateWithoutDirectMessageInput, ConversationUncheckedUpdateWithoutDirectMessageInput>
+    data: XOR<ConversationUpdateWithoutDirectMessagesInput, ConversationUncheckedUpdateWithoutDirectMessagesInput>
   }
 
-  export type ConversationUpdateWithoutDirectMessageInput = {
+  export type ConversationUpdateWithoutDirectMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     memberOne?: MemberUpdateOneRequiredWithoutConversationInitiatedNestedInput
     memberTwo?: MemberUpdateOneRequiredWithoutConversationRecievedNestedInput
   }
 
-  export type ConversationUncheckedUpdateWithoutDirectMessageInput = {
+  export type ConversationUncheckedUpdateWithoutDirectMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     memberOneId?: StringFieldUpdateOperationsInput | string
     memberTwoId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AnonymousChannelCreateWithoutCreatorInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    messages?: AnonymousMessageCreateNestedManyWithoutChannelInput
+  }
+
+  export type AnonymousChannelUncheckedCreateWithoutCreatorInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    messages?: AnonymousMessageUncheckedCreateNestedManyWithoutChannelInput
+  }
+
+  export type AnonymousChannelCreateOrConnectWithoutCreatorInput = {
+    where: AnonymousChannelWhereUniqueInput
+    create: XOR<AnonymousChannelCreateWithoutCreatorInput, AnonymousChannelUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type AnonymousChannelCreateManyCreatorInputEnvelope = {
+    data: AnonymousChannelCreateManyCreatorInput | AnonymousChannelCreateManyCreatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnonymousChannelUpsertWithWhereUniqueWithoutCreatorInput = {
+    where: AnonymousChannelWhereUniqueInput
+    update: XOR<AnonymousChannelUpdateWithoutCreatorInput, AnonymousChannelUncheckedUpdateWithoutCreatorInput>
+    create: XOR<AnonymousChannelCreateWithoutCreatorInput, AnonymousChannelUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type AnonymousChannelUpdateWithWhereUniqueWithoutCreatorInput = {
+    where: AnonymousChannelWhereUniqueInput
+    data: XOR<AnonymousChannelUpdateWithoutCreatorInput, AnonymousChannelUncheckedUpdateWithoutCreatorInput>
+  }
+
+  export type AnonymousChannelUpdateManyWithWhereWithoutCreatorInput = {
+    where: AnonymousChannelScalarWhereInput
+    data: XOR<AnonymousChannelUpdateManyMutationInput, AnonymousChannelUncheckedUpdateManyWithoutCreatorInput>
+  }
+
+  export type AnonymousChannelScalarWhereInput = {
+    AND?: AnonymousChannelScalarWhereInput | AnonymousChannelScalarWhereInput[]
+    OR?: AnonymousChannelScalarWhereInput[]
+    NOT?: AnonymousChannelScalarWhereInput | AnonymousChannelScalarWhereInput[]
+    id?: StringFilter<"AnonymousChannel"> | string
+    name?: StringFilter<"AnonymousChannel"> | string
+    createdAt?: DateTimeFilter<"AnonymousChannel"> | Date | string
+    updatedAt?: DateTimeFilter<"AnonymousChannel"> | Date | string
+    anonymousUserId?: StringFilter<"AnonymousChannel"> | string
+  }
+
+  export type AnonymousUserCreateWithoutAnonymousChannelInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+  }
+
+  export type AnonymousUserUncheckedCreateWithoutAnonymousChannelInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+  }
+
+  export type AnonymousUserCreateOrConnectWithoutAnonymousChannelInput = {
+    where: AnonymousUserWhereUniqueInput
+    create: XOR<AnonymousUserCreateWithoutAnonymousChannelInput, AnonymousUserUncheckedCreateWithoutAnonymousChannelInput>
   }
 
   export type AnonymousMessageCreateWithoutChannelInput = {
@@ -18148,6 +19347,29 @@ export namespace Prisma {
   export type AnonymousMessageCreateManyChannelInputEnvelope = {
     data: AnonymousMessageCreateManyChannelInput | AnonymousMessageCreateManyChannelInput[]
     skipDuplicates?: boolean
+  }
+
+  export type AnonymousUserUpsertWithoutAnonymousChannelInput = {
+    update: XOR<AnonymousUserUpdateWithoutAnonymousChannelInput, AnonymousUserUncheckedUpdateWithoutAnonymousChannelInput>
+    create: XOR<AnonymousUserCreateWithoutAnonymousChannelInput, AnonymousUserUncheckedCreateWithoutAnonymousChannelInput>
+    where?: AnonymousUserWhereInput
+  }
+
+  export type AnonymousUserUpdateToOneWithWhereWithoutAnonymousChannelInput = {
+    where?: AnonymousUserWhereInput
+    data: XOR<AnonymousUserUpdateWithoutAnonymousChannelInput, AnonymousUserUncheckedUpdateWithoutAnonymousChannelInput>
+  }
+
+  export type AnonymousUserUpdateWithoutAnonymousChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnonymousUserUncheckedUpdateWithoutAnonymousChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AnonymousMessageUpsertWithWhereUniqueWithoutChannelInput = {
@@ -18183,7 +19405,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: string
+    creator: AnonymousUserCreateNestedOneWithoutAnonymousChannelInput
   }
 
   export type AnonymousChannelUncheckedCreateWithoutMessagesInput = {
@@ -18191,7 +19413,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    creator: string
+    anonymousUserId: string
   }
 
   export type AnonymousChannelCreateOrConnectWithoutMessagesInput = {
@@ -18215,7 +19437,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: StringFieldUpdateOperationsInput | string
+    creator?: AnonymousUserUpdateOneRequiredWithoutAnonymousChannelNestedInput
   }
 
   export type AnonymousChannelUncheckedUpdateWithoutMessagesInput = {
@@ -18223,7 +19445,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: StringFieldUpdateOperationsInput | string
+    anonymousUserId?: StringFieldUpdateOperationsInput | string
   }
 
   export type AccountCreateManyUserInput = {
@@ -18244,7 +19466,7 @@ export namespace Prisma {
   export type ServerCreateManyUserInput = {
     id?: string
     name: string
-    image: string
+    image?: string | null
     inviteCode: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18255,16 +19477,7 @@ export namespace Prisma {
     role?: $Enums.MemberRole
     serverId: string
     createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ChannelCreateManyUserInput = {
-    id?: string
-    name: string
-    type?: $Enums.ChannelType
-    serverId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -18315,7 +19528,7 @@ export namespace Prisma {
   export type ServerUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     inviteCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18326,7 +19539,7 @@ export namespace Prisma {
   export type ServerUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     inviteCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18337,7 +19550,7 @@ export namespace Prisma {
   export type ServerUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     inviteCode?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18375,50 +19588,21 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ChannelUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    server?: ServerUpdateOneRequiredWithoutChannelsNestedInput
-    Message?: MessageUpdateManyWithoutChannelNestedInput
-  }
-
-  export type ChannelUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
-    serverId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Message?: MessageUncheckedUpdateManyWithoutChannelNestedInput
-  }
-
-  export type ChannelUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
-    serverId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type MemberCreateManyServerInput = {
     id?: string
     role?: $Enums.MemberRole
     userId: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
   }
 
   export type ChannelCreateManyServerInput = {
     id?: string
     name: string
     type?: $Enums.ChannelType
-    userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: string | null
   }
 
   export type MemberUpdateWithoutServerInput = {
@@ -18459,27 +19643,27 @@ export namespace Prisma {
     type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutChannelsNestedInput
-    Message?: MessageUpdateManyWithoutChannelNestedInput
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    Messages?: MessageUpdateManyWithoutChannelNestedInput
   }
 
   export type ChannelUncheckedUpdateWithoutServerInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
-    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Message?: MessageUncheckedUpdateManyWithoutChannelNestedInput
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    Messages?: MessageUncheckedUpdateManyWithoutChannelNestedInput
   }
 
   export type ChannelUncheckedUpdateManyWithoutServerInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumChannelTypeFieldUpdateOperationsInput | $Enums.ChannelType
-    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MessageCreateManyMemberInput = {
@@ -18504,8 +19688,8 @@ export namespace Prisma {
 
   export type DirectMessageCreateManyMemberInput = {
     id?: string
-    content: string
-    fileUrl: string
+    content?: string | null
+    fileUrl?: string | null
     conversationId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18519,7 +19703,7 @@ export namespace Prisma {
     deleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    channel?: ChannelUpdateOneRequiredWithoutMessageNestedInput
+    channel?: ChannelUpdateOneRequiredWithoutMessagesNestedInput
   }
 
   export type MessageUncheckedUpdateWithoutMemberInput = {
@@ -18545,13 +19729,13 @@ export namespace Prisma {
   export type ConversationUpdateWithoutMemberOneInput = {
     id?: StringFieldUpdateOperationsInput | string
     memberTwo?: MemberUpdateOneRequiredWithoutConversationRecievedNestedInput
-    DirectMessage?: DirectMessageUpdateManyWithoutConversationNestedInput
+    DirectMessages?: DirectMessageUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutMemberOneInput = {
     id?: StringFieldUpdateOperationsInput | string
     memberTwoId?: StringFieldUpdateOperationsInput | string
-    DirectMessage?: DirectMessageUncheckedUpdateManyWithoutConversationNestedInput
+    DirectMessages?: DirectMessageUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateManyWithoutMemberOneInput = {
@@ -18562,13 +19746,13 @@ export namespace Prisma {
   export type ConversationUpdateWithoutMemberTwoInput = {
     id?: StringFieldUpdateOperationsInput | string
     memberOne?: MemberUpdateOneRequiredWithoutConversationInitiatedNestedInput
-    DirectMessage?: DirectMessageUpdateManyWithoutConversationNestedInput
+    DirectMessages?: DirectMessageUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutMemberTwoInput = {
     id?: StringFieldUpdateOperationsInput | string
     memberOneId?: StringFieldUpdateOperationsInput | string
-    DirectMessage?: DirectMessageUncheckedUpdateManyWithoutConversationNestedInput
+    DirectMessages?: DirectMessageUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateManyWithoutMemberTwoInput = {
@@ -18578,18 +19762,18 @@ export namespace Prisma {
 
   export type DirectMessageUpdateWithoutMemberInput = {
     id?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deleted?: BoolFieldUpdateOperationsInput | boolean
-    conversation?: ConversationUpdateOneRequiredWithoutDirectMessageNestedInput
+    conversation?: ConversationUpdateOneRequiredWithoutDirectMessagesNestedInput
   }
 
   export type DirectMessageUncheckedUpdateWithoutMemberInput = {
     id?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     conversationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18598,8 +19782,8 @@ export namespace Prisma {
 
   export type DirectMessageUncheckedUpdateManyWithoutMemberInput = {
     id?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     conversationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18648,8 +19832,8 @@ export namespace Prisma {
 
   export type DirectMessageCreateManyConversationInput = {
     id?: string
-    content: string
-    fileUrl: string
+    content?: string | null
+    fileUrl?: string | null
     memberId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18658,8 +19842,8 @@ export namespace Prisma {
 
   export type DirectMessageUpdateWithoutConversationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deleted?: BoolFieldUpdateOperationsInput | boolean
@@ -18668,8 +19852,8 @@ export namespace Prisma {
 
   export type DirectMessageUncheckedUpdateWithoutConversationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     memberId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18678,12 +19862,42 @@ export namespace Prisma {
 
   export type DirectMessageUncheckedUpdateManyWithoutConversationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     memberId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deleted?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AnonymousChannelCreateManyCreatorInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AnonymousChannelUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: AnonymousMessageUpdateManyWithoutChannelNestedInput
+  }
+
+  export type AnonymousChannelUncheckedUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: AnonymousMessageUncheckedUpdateManyWithoutChannelNestedInput
+  }
+
+  export type AnonymousChannelUncheckedUpdateManyWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AnonymousMessageCreateManyChannelInput = {

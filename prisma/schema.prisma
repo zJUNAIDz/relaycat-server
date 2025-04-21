@@ -1,10 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 generator client {
   provider = "prisma-client-js"
+  output   = "../generated/prisma/client"
 }
 
 datasource db {
@@ -13,7 +9,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-//=========== Auth.js Modals for prisma start ===============
 model Account {
   userId            String?
   type              String
@@ -26,7 +21,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  createdAt         DateTime @default(now())
+  createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt
   user              User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -34,32 +29,32 @@ model Account {
   @@index([userId])
 }
 
-//=========== Auth.js Modals for prisma end ===============
-
 model User {
   id            String    @id @default(uuid())
+  username      String?    @unique
   name          String?
-  image         String
+  image         String?
   email         String    @unique
   emailVerified DateTime?
+  bannerColor   String?
+  bannerImage   String?
+  bio           String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
   accounts      Account[]
   servers       Server[]
   members       Member[]
-  channels      Channel[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  @@index([id])
+  // channels      Channel[]
 }
 
 model Server {
   id         String    @id @default(uuid())
   name       String
-  image      String
+  image      String?
   inviteCode String    @unique
   userId     String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   members    Member[]
   channels   Channel[]
@@ -72,8 +67,8 @@ model Member {
   role                  MemberRole      @default(GUEST)
   userId                String
   serverId              String
-  createdAt             DateTime        @default(now())
-  updatedAt             DateTime        @updatedAt
+  createdAt             DateTime        @default(now()) @map("created_at")
+  updatedAt             DateTime        @map("updated_at")
   user                  User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   server                Server          @relation(fields: [serverId], references: [id], onDelete: Cascade)
   Messages              Message[]
@@ -81,6 +76,7 @@ model Member {
   ConversationRecieved  Conversation[]  @relation("memberTwo")
   DirectMessage         DirectMessage[]
 
+  @@unique([userId, serverId])
   @@index([userId])
   @@index([serverId])
 }
@@ -89,16 +85,93 @@ model Channel {
   id        String      @id @default(uuid())
   name      String
   type      ChannelType @default(TEXT)
-  userId    String
+  // userId    String
   serverId  String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  // user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   server    Server      @relation(fields: [serverId], references: [id], onDelete: Cascade)
-  Message   Message[]
+  Messages  Message[]
+  userId    String?
 
-  @@index([userId])
+  // @@index([userId])
   @@index([serverId])
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  content   String?
+  fileUrl   String?
+  deleted   Boolean  @default(false)
+  memberId  String
+  channelId String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@index([channelId])
+  @@index([memberId])
+  @@index([channelId, createdAt])
+}
+
+model Conversation {
+  id             String          @id @default(uuid())
+  memberOneId    String
+  memberTwoId    String
+  memberOne      Member          @relation("memberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
+  memberTwo      Member          @relation("memberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
+  DirectMessages DirectMessage[]
+
+  @@unique([memberOneId, memberTwoId])
+  @@index([memberTwoId])
+}
+
+model DirectMessage {
+  id             String       @id @default(uuid())
+  content        String?
+  fileUrl        String?
+  memberId       String
+  conversationId String
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+  deleted        Boolean      @default(false)
+  member         Member       @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([memberId])
+  @@index([conversationId])
+}
+
+model AnonymousUser {
+  id               String             @id @default(uuid())
+  name             String
+  createdAt        DateTime           @default(now()) @map("created_at")
+  AnonymousChannel AnonymousChannel[]
+}
+
+model AnonymousChannel {
+  id              String             @id @default(uuid())
+  name            String
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
+  creator         AnonymousUser      @relation(fields: [anonymousUserId], references: [id])
+  messages        AnonymousMessage[]
+  anonymousUserId String
+
+  @@index([anonymousUserId])
+}
+
+model AnonymousMessage {
+  id         String           @id @default(uuid())
+  content    String?
+  senderName String
+  channelId  String
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+  channel    AnonymousChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@index([channelId])
 }
 
 enum MemberRole {
@@ -111,48 +184,4 @@ enum ChannelType {
   TEXT
   AUDIO
   VIDEO
-}
-
-model Message {
-  id        String   @id @default(uuid())
-  content   String?  @db.Text
-  fileUrl   String?  @db.Text
-  deleted   Boolean  @default(false)
-  memberId  String
-  member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  channelId String
-  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([channelId])
-  @@index([memberId])
-}
-
-model Conversation {
-  id            String          @id @default(uuid())
-  memberOneId   String
-  memberOne     Member          @relation("memberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
-  memberTwoId   String
-  memberTwo     Member          @relation("memberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
-  DirectMessage DirectMessage[]
-
-  @@unique([memberOneId, memberTwoId])
-  @@index([memberTwoId])
-}
-
-model DirectMessage {
-  id             String       @id @default(uuid())
-  content        String       @db.Text
-  fileUrl        String?      @db.Text
-  memberId       String
-  member         Member       @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  conversationId String
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  deleted        Boolean      @default(false)
-
-  @@index([memberId])
-  @@index([conversationId])
 }

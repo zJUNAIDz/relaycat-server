@@ -170,10 +170,10 @@ exports.Prisma.ChannelScalarFieldEnum = {
   id: 'id',
   name: 'name',
   type: 'type',
-  userId: 'userId',
   serverId: 'serverId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  userId: 'userId'
 };
 
 exports.Prisma.MessageScalarFieldEnum = {
@@ -204,12 +204,18 @@ exports.Prisma.DirectMessageScalarFieldEnum = {
   deleted: 'deleted'
 };
 
+exports.Prisma.AnonymousUserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.AnonymousChannelScalarFieldEnum = {
   id: 'id',
   name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  creator: 'creator'
+  anonymousUserId: 'anonymousUserId'
 };
 
 exports.Prisma.AnonymousMessageScalarFieldEnum = {
@@ -256,6 +262,7 @@ exports.Prisma.ModelName = {
   Message: 'Message',
   Conversation: 'Conversation',
   DirectMessage: 'DirectMessage',
+  AnonymousUser: 'AnonymousUser',
   AnonymousChannel: 'AnonymousChannel',
   AnonymousMessage: 'AnonymousMessage'
 };
