@@ -1,6 +1,5 @@
-import { ChannelType, MemberRole } from "@prisma/client";
+import { ChannelType } from "@/generated/prisma/client";
 import { Hono } from "hono";
-import { db } from "../lib/db";
 import { channelService } from "../services/channels.service";
 
 const channelsRoute = new Hono();
@@ -52,8 +51,8 @@ channelsRoute.get("/:channelId", async (c) => {
     return c.json({ error: "channelId is required" }, 400)
   }
   const { user: { id: userId } } = c.get("jwtPayload")
-  const channel = await channelService.getChannelById(channelId, userId)
-  if (!channel) return c.json({ error: "Channel not found" }, 400)
+  const { channel, error } = await channelService.getChannelById(channelId, userId)
+  if (error) return c.json({ error }, 400)
   return c.json({ channel })
 })
 

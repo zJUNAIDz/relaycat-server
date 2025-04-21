@@ -1,4 +1,4 @@
-import { Channel, MemberRole, Server, User } from "@prisma/client";
+import { Channel, MemberRole, Server, User } from "@/generated/prisma/client";
 import { db } from "../lib/db";
 import { ServerWithChannels } from "../../types";
 
@@ -26,6 +26,7 @@ class ChannelService {
   // public async updateChannel(channel: Channel);
   // public async deleteChannel(id: number);
   async createChannel({ name, type, serverId, userId }: CreateChannelPayload): Promise<{ server: any | null, error: string | null }> {
+    if (!userId) return { server: null, error: "userId cannot be null" };
     try {
 
       const server = await db.server.update({
@@ -125,6 +126,7 @@ class ChannelService {
   async editChannel({ name, type, channelId, userId }:
     { name: Channel["name"], type: Channel["type"], channelId: Channel["id"], userId: Channel["userId"] }):
     Promise<{ server: any | null, error: string | null }> {
+    if (!userId) return { server: null, error: "userId cannot be null" };
     try {
 
       const server = await db.channel.update({

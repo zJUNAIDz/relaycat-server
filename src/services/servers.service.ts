@@ -1,4 +1,4 @@
-import { MemberRole, Prisma, Server, User } from "@prisma/client";
+import { MemberRole, Prisma, Server, User } from "@/generated/prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import { ServerWithMembersAndUser, ServerWithMembersOnly, ServerWithMembersUserAndChannels } from "../../types";
 import { db } from "../lib/db";

@@ -1,4 +1,4 @@
-import { DirectMessage, Member } from "@prisma/client";
+import { DirectMessage, Member } from "@/generated/prisma/client";
 import { db } from "../lib/db";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 

@@ -1,10 +1,9 @@
-import { Hono } from "hono";
-import { serversService } from "../services/servers.service";
-import { parseToken } from "../utils/token";
-import { newServerInputValidation } from "../utils/validation";
-import { db } from "../lib/db";
+import { Server } from "@/generated/prisma/client";
 import { randomUUIDv7 } from "bun";
-import { Server } from "@prisma/client";
+import { Hono } from "hono";
+import { db } from "../lib/db";
+import { serversService } from "../services/servers.service";
+import { newServerInputValidation } from "../utils/validation";
 const serverRoutes = new Hono();
 
 
@@ -45,6 +44,7 @@ serverRoutes.patch("/:serverId", async (c) => {
 
 serverRoutes.post("/", async (c) => {
   try {
+    console.log("aayaa")
     const body = await c.req.json();
     const validate = newServerInputValidation(body.name, body.imageUrl);
     if (!validate.success) {

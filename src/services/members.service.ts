@@ -1,4 +1,4 @@
-import { Member } from "@prisma/client";
+import { Member } from "@/generated/prisma/client";
 import { db } from "../lib/db";
 
 class MembersService {
@@ -33,7 +33,7 @@ class MembersService {
       return { error: "Failed to find members" };
     }
   }
-  
+
   async getMembersByServerId(serverId: Member["serverId"]) {
     try {
       const members = await db.member.findMany({

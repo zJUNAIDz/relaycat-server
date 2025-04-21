@@ -1,4 +1,4 @@
-import { Channel, Member, Server, User } from "@prisma/client";
+import { Channel, Member, Server, User } from "@/generated/prisma/client";
 
 export type ServerWithMembersAndUser = Server & {
   members: (Member & { user: User })[];

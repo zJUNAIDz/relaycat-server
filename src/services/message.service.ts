@@ -1,4 +1,4 @@
-import { Channel, Member, Message } from "@prisma/client";
+import { Channel, Member, Message } from "@/generated/prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { db } from "../lib/db";
 import { socketManager } from "../lib/socket-manager";
@@ -52,7 +52,7 @@ class MessageService {
           },
         },
         orderBy: {
-          createdAt: "asc",
+          createdAt: "desc",
         },
       });
       if (!messages) {
@@ -107,11 +107,19 @@ class MessageService {
         },
         data: {
           deleted: true
+        },
+        include: {
+          member: {
+            include: {
+              user: true
+            }
+          }
         }
       });
       if (!message) {
         return { error: "Message not deleted" }
       }
+      socketManager.io.emit(`chat:${message.channelId}:messages:delete`, message)
       return { message }
     } catch (error) {
       console.error("[deleteMessage] ", error)

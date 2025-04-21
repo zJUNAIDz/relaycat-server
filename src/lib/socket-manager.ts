@@ -1,7 +1,6 @@
 import { Server as SocketIOServer } from "socket.io";
 import { createServer } from "http";
 import { instrument } from "@socket.io/admin-ui";
-
 class SocketManager {
   private static instance: SocketManager;
   public io: SocketIOServer;
@@ -16,18 +15,14 @@ class SocketManager {
         credentials: true
       }
     });
-
     this.httpServer.listen(4000, () => {
       console.log(`Socket.IO server listening on 4000`);
     });
-
     this.initializeSocket();
   }
-
   private initializeSocket() {
     this.io.on("connection", (socket) => {
       console.log(`User connected (${socket.id})`);
-
       socket.on("disconnect", () => {
         console.log(`User disconnected (${socket.id})`);
       });
@@ -42,5 +37,4 @@ class SocketManager {
     return SocketManager.instance;
   }
 }
-
 export const socketManager = SocketManager.getInstance();
